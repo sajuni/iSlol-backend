@@ -1,4 +1,4 @@
-package com.insung.lol.backofficeuser.controller;
+package com.insung.lol.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @Controller("/api/user")
-public class BackOfficeUserController extends BaseController {
+public class UserController extends BaseController {
 
 	
 }
