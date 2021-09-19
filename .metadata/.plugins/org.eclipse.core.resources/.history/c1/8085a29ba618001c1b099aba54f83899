@@ -1,0 +1,5 @@
+package com.insung.lol.user.repository;
+
+public class UserRepository {
+
+}
