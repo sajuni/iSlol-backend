@@ -25,8 +25,8 @@ public class User {
 	@Column(name = "USER_EMAIL", length = 50, nullable = false)
 	private String userEmail;
 
-	@Column(name = "USER_PW", length = 100, nullable = false)
-	private String userPw;
+	@Column(name = "USER_PWD", length = 100, nullable = false)
+	private String userPwd;
 
 	@Column(name = "USER_Name", length = 10, nullable = false)
 	private String userName;
