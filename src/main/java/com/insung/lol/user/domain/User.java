@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "TB_USER", uniqueConstraints = { @UniqueConstraint(columnNames = "USER_ID") })
+@Table(name = "TB_USER", uniqueConstraints = { @UniqueConstraint(columnNames = "USER_EMAIL") })
 public class User {
 	
 	@Id
@@ -22,16 +22,16 @@ public class User {
 	@Column(name = "USER_SEQ")
 	private long userSeq;
 	
-	@Column(name = "USER_ID", length = 20, nullable = false)
-	private String userId;
+	@Column(name = "USER_EMAIL", length = 50, nullable = false)
+	private String userEmail;
 
-	@Column(name = "USER_PW", length = 255, nullable = false)
+	@Column(name = "USER_PW", length = 100, nullable = false)
 	private String userPw;
 
-	@Column(name = "USER_NM", length = 10, nullable = false)
-	private String userNm;
-
-	@Column(name = "USER_EMAIL_ADDR", length = 50, nullable = false)
-	private String userEmailAddr;
+	@Column(name = "USER_Name", length = 10, nullable = false)
+	private String userName;
 	
+	@Column(name = "USER_ADDR", length = 255, nullable = false)
+	private String userAddr;
+
 }

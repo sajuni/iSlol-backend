@@ -24,8 +24,8 @@ public class UserRule {
 	private long ruleSeq;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "RUNE_NAME", columnDefinition = "enum('RULE_USER', 'RULE_ADMIN')")
-	@ColumnDefault("'ROLE_USER'")
+	@Column(name = "RULE_NAME", columnDefinition = "enum('RULE_USER', 'RULE_ADMIN')")
+	@ColumnDefault("'RULE_USER'")
 	private UserERole ruleName;
 	
 	
