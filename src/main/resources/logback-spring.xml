@@ -7,77 +7,60 @@
     <springProfile name="local">
         <property resource="common/logback/logback-local.properties"/>
     </springProfile>
-    <springProfile name="dev">
+    
+    <!-- <springProfile name="dev">
         <property resource="common/logback/logback-dev.properties"/>
     </springProfile>
     <springProfile name="prod">
         <property resource="common/logback/logback-prod.properties"/>
-    </springProfile>
+    </springProfile> -->
      
-    <!-- log packagename -->
-    <property name="LOG_PACKAGE_NAME" value="${log.config.packagename}"/>
-    <!-- log file path -->
-    <property name="LOG_PATH" value="${log.config.path}"/>
-    <!-- log file name -->
-    <property name="LOG_FILE_NAME" value="${log.config.filename}"/>
-    <!-- log days -->
-    <property name="LOG_DAYS" value="${log.config.days}"/>
-    <!-- log filesize log -->
-    <property name="LOG_FILESIZE_LOG" value="${log.config.filesizelog}"/>
-    <!-- log filesize zip -->
-    <property name="LOG_FILESIZE_ZIP" value="${log.config.filesizezip}"/>
-    <!-- log filesize total -->
-    <property name="LOG_TOTAL_FILESIZE" value="${log.config.totalfilesize}"/>
-    <!-- log min count -->
-    <property name="LOG_FILE_MIN" value="${log.config.min}"/>
-    <!-- log max count -->
-    <property name="LOG_FILE_MAX" value="${log.config.max}"/>
-    <!-- pattern -->
-    <property name="LOG_PATTERN"
-              value="%-5level %d{yy-MM-dd HH:mm:ss} %-40([%logger{0}:%line]) - %msg%n"/>
+	<!-- log file path --> 
+	<property name="LOG_PATH" value="${log.config.path}"/> 
+	<!-- log file name --> 
+	<property name="LOG_FILE_NAME" value="${log.config.filename}"/> 
+	<!-- err log file name --> 
+	<property name="ERR_LOG_FILE_NAME" value="err_log"/> 
+	<!-- pattern --> 
+	<property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
 
-    <property name="LOG_PATTERN_LIVE"
-              value="%-5level %d{yy-MM-dd HH:mm:ss} %-40([%method:%line]) - %msg%n"/>
 
     <!-- console log -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
-    <!-- 로그 파일 생성 관련 -->
-    <!-- 로그 모드 -->
-    <!-- log file save -->
 
-    <if condition='property("log.config.mode").equals("DEV")'>
-        <then>
-            <appender name="FILE"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
-                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                    <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.log
-                    </fileNamePattern>
-                </rollingPolicy>
-                <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-                    <pattern>${LOG_PATTERN}</pattern>
-                </encoder>
-            </appender>
-            <logger name="org.springframework" level="INFO"/>
-		    <logger name="${LOG_PACKAGE_NAME}" level="DEBUG"/>
-			<logger name="org.hibernate.SQL" level="DEBUG"/>
-			
-		    <root level="INFO">
-		        <appender-ref ref="STDOUT"/>
-		        <appender-ref ref="FILE"/>
-		    </root>
-        </then>
-        <else>
-            <logger name="${LOG_PACKAGE_NAME}" level="DEBUG"/>
-        
-            <root level="INFO">
-                <appender-ref ref="STDOUT"/>
-            </root>
-        </else>
-    </if>
+	<!-- File Appender --> 
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+		<!-- 파일경로 설정 --> 
+		<file>${LOG_PATH}/${LOG_FILE_NAME}.log</file> 
+		
+		<!-- 출력패턴 설정--> 
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"> 
+			<pattern>${LOG_PATTERN}</pattern> 
+		</encoder> 
+		
+		<!-- Rolling 정책 --> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+			<!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 --> 
+			<fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern> 
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"> 
+				<!-- 파일당 최고 용량 kb, mb, gb --> 
+				<maxFileSize>10MB</maxFileSize> 
+			</timeBasedFileNamingAndTriggeringPolicy> 
+			<!-- 일자별 로그파일 최대 보관주기(~일), 해당 설정일 이상된 파일은 자동으로 제거--> 
+			<maxHistory>30</maxHistory> 
+		</rollingPolicy> 
+	</appender>
+
+	<!-- root레벨 설정 --> 
+	<root level="${LOG_LEVEL}"> 
+		<appender-ref ref="CONSOLE"/> 
+		<appender-ref ref="FILE"/>
+		<!-- <appender-ref ref="Error"/> --> 
+	</root>
+	    
 	    
 </configuration>
