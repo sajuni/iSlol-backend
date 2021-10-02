@@ -1,8 +1,18 @@
 server:
   port: 8180
 
-spring:  datasource:
+spring:
+  profiles:    active: local  datasource:
     driver-class-name: org.mariadb.jdbc.Driver    type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mariadb://127.0.0.1:3306/db_insung_lol?useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: 1013
+  jpa:
+    hibernate:
+      ddl-auto: create
+      show-sql: true # DDL 출력
+    
+# logging
+logging:
+  level:
+    root: info
