@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.insung.lol.user.controller.UserController;
+import com.insung.lol.member.controller.MemberController;
 
 import lombok.extern.slf4j.Slf4j;
 
-@WebMvcTest(controllers = UserController.class)
+@WebMvcTest(controllers = MemberController.class)
 @Slf4j
 public class UserControllerTest {
 

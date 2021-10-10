@@ -1,4 +1,4 @@
-package com.insung.lol.user.domain;
+package com.insung.lol.member.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +15,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "TB_USER_RULE")
-public class UserRule {
+@Table(name = "TB_MEMBER_RULE")
+public class MemberRule {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class UserRule {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "RULE_NAME", columnDefinition = "enum('RULE_USER', 'RULE_ADMIN')")
 	@ColumnDefault("'RULE_USER'")
-	private UserERole ruleName;
+	private MemberERole ruleName;
 	
 	
 }
