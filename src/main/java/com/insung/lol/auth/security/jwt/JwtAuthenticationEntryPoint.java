@@ -1,4 +1,4 @@
-package com.insung.lol.auth.jwt;
+package com.insung.lol.auth.security.jwt;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "jwt.expired.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expired.secret'"
+  },
+  {
+    "name": "lol.expired.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'lol.expired.secret'"
+  },
+  {
+    "name": "jwt.expired.jwtExpirationMs",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expired.jwtExpirationMs'"
+  },
+  {
+    "name": "jwt.expired.rjwtExpirationMs",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expired.rjwtExpirationMs'"
+  },
+  {
+    "name": "jwt.expired.jwtsecret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expired.jwtsecret'"
+  }
+]}
