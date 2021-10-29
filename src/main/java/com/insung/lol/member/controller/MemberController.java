@@ -1,6 +1,5 @@
 package com.insung.lol.member.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,6 +51,7 @@ import lombok.extern.slf4j.Slf4j;
 * ----------------------------------------------------------- 
 * 2021.10.29 	Seung Hyo 	최초 생성 
 */
+
 @Slf4j
 @RestController
 @RequestMapping("/api/user")
@@ -133,7 +133,7 @@ public class MemberController extends BaseController {
 	*/
 	@PostMapping("/auth/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInVO signInReq) {
-
+		log.info("테스트" + signInReq);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(signInReq.getMemberEmail(), signInReq.getMemberPwd()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);

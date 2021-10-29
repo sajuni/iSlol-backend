@@ -18,7 +18,9 @@ spring:
 logging:
   level:
     root: info
-    org.hibernate.sql: debug
+    org:
+    hibernate:
+    sql: debug
 
 # Token     
 jwt:
@@ -26,3 +28,4 @@ jwt:
     jwtSecret: jwtsecret
     jwtExpirationMs: 900000
     rjwtExpirationMs: 1800000
+    
