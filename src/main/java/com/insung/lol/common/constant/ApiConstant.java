@@ -1,11 +1,16 @@
 package com.insung.lol.common.constant;
 
-/**
- * @fileName	: ApiConstant.java
- * @author		: "sajuni11"
- * @date		: 2021. 8. 7.
- * @description	: API 키/코드 값 관련 Constant
- */
+/** 
+* @packageName 	: com.insung.lol.common.constant 
+* @fileName 	: ApiConstant.java 
+* @author 		: Seung Hyo
+* @date 		: 2021.10.29 
+* @description 	: API 키/코드 값 관련 Constant
+* =========================================================== 
+* DATE 			AUTHOR 		NOTE 
+* ----------------------------------------------------------- 
+* 2021.10.29 	Seung Hyo 	최초 생성 
+*/
 public class ApiConstant {
 	// API응답 헤더 키
 	public static final String API_HEAD = "head";

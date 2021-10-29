@@ -24,20 +24,19 @@ import lombok.Data;
 @AllArgsConstructor
 public class SignUpVO {
 	
-	public SignUpVO(String string, String string2, String string3, String string4) {
-		// TODO Auto-generated constructor stub
-	}
 	@NotBlank
 	@Email
-	private String memberEmail;
+	private String email;
 	
 	@NotBlank
-	private String memberName;
+	private String name;
 	
 	@NotBlank
 	@Size(min = 6, max = 40)
-	private String MemberPwd;
+	private String pwd;
 
-	private String MemberAddr;
+	private String addr;
 	private Set<String> role;
+	
+	
 }

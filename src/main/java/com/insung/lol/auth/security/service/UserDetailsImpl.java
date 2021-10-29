@@ -1,8 +1,11 @@
 package com.insung.lol.auth.security.service;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,19 +25,20 @@ public class UserDetailsImpl implements UserDetails {
 	
 	private String roleCode;
 	
-	public UserDetailsImpl(Long userSeq, String userEmail, String userRealName, String userPwd, String roleCode) {
+	public UserDetailsImpl(Long userSeq, String userEmail, String userRealName, String userPwd, Collection<? extends GrantedAuthority> authorities) {
 		this.userSeq = userSeq;
 		this.userEmail = userEmail;
 		this.userRealName = userRealName;
 		this.userPwd = userPwd;
-		this.roleCode = roleCode;
+		this.authorities = authorities;
 	}
 
 	public static UserDetailsImpl build(Member member) {
-		String roleCode = member.getUserAuthorityCd();
+		List<GrantedAuthority> authorities = member.getRoles().stream()
+				.map(role -> new SimpleGrantedAuthority(role.getRoleName().name())).collect(Collectors.toList());
 		
 		return new UserDetailsImpl(member.getMemberSeq(), member.getMemberEmail(), member.getMemberName()
-				, member.getMemberPwd(), roleCode);
+				, member.getMemberPwd(), authorities);
 	}
 	
 	@Override

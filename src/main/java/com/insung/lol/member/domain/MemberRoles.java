@@ -27,5 +27,23 @@ public class MemberRoles {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "ROLE_NAME", nullable = false, columnDefinition = "enum('ROLE_USER', 'ROLE_ADMIN') default 'ROLE_USER'")
 	private MemberERole roleName;
+
+	public MemberRoles() {
+	}
+
+	public MemberRoles(Long roleSeq, MemberERole roleName) {
+		this.roleSeq = roleSeq;
+		this.roleName = roleName;
+	}
+	
+	public MemberRoles roleSeq(long roleSeq) {
+		this.roleSeq = roleSeq;
+		return this;
+	}
+	
+	public MemberRoles roleName(MemberERole roleName) {
+		this.roleName = roleName;
+		return this;
+	}
 	
 }

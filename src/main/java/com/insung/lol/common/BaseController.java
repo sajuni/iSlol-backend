@@ -12,12 +12,17 @@ import com.insung.lol.common.constant.ApiConstant;
 import lombok.extern.slf4j.Slf4j;
 
 
-/**
- * @fileName	: BaseController.java
- * @author		: "sajuni11"
- * @date		: 2021. 8. 7.
- * @description	: 컨트롤러에서 공통적으로 사용하는 함수를 정의한다.
- */
+/** 
+* @packageName 	: com.insung.lol.common 
+* @fileName 	: BaseController.java 
+* @author 		: Seung Hyo
+* @date 		: 2021.10.29 
+* @description 	: 컨트롤러에서 공통적으로 사용하는 함수를 정의한다.
+* =========================================================== 
+* DATE 			AUTHOR 		NOTE 
+* ----------------------------------------------------------- 
+* 2021.10.29 	Seung Hyo 	최초 생성 
+*/
 @Slf4j
 public class BaseController {
 

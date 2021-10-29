@@ -40,9 +40,6 @@ public class Member implements Cloneable {
 	@Column(name = "MEMBER_ADDR", length = 255, nullable = false)
 	private String memberAddr;
 
-	@Column(name = "USER_AUTHORITY_CD", length = 10, nullable = false)
-	private String userAuthorityCd;
-	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "TB_MEM_ROLES", joinColumns = @JoinColumn(name = "MEMBER_SEQ"), inverseJoinColumns = @JoinColumn(name = "ROLE_SEQ"))
 	private Set<MemberRoles> roles = new HashSet<>();
@@ -51,12 +48,11 @@ public class Member implements Cloneable {
 	}
 	
 	public Member(String memberEmail, String memberPwd, 
-			String memberName, String memberAddr, String userAuthorityCd) {
+			String memberName, String memberAddr) {
 		this.memberEmail		= memberEmail;
 		this.memberPwd 			= memberPwd;
 		this.memberName 		= memberName;
 		this.memberAddr			= memberAddr;
-		this.userAuthorityCd	= userAuthorityCd;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.insung.lol.member.domain.Member;
 import com.insung.lol.member.repository.MemberRepository;
+
 @Transactional
 @Service
 public class UserService {

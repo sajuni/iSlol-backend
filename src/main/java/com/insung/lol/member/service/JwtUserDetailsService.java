@@ -1,15 +1,17 @@
 package com.insung.lol.member.service;
 
-import java.util.ArrayList;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
+import com.insung.lol.auth.security.service.UserDetailsImpl;
 import com.insung.lol.member.domain.Member;
+
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -18,11 +20,13 @@ public class JwtUserDetailsService implements UserDetailsService {
 	MemberService memberService;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		 Optional<Member> userOptional = memberService.findMemberByEmail(username);
+	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
+		 Member user = memberService.findMemberByEmail(userEmail)
+					.orElseThrow(() -> new UsernameNotFoundException("User Not Found with userId: " + userEmail));
 
-		 Member member = userOptional.orElseThrow(()->new UsernameNotFoundException("user name not found!"));
-	        return new org.springframework.security.core.userdetails.User(member.getMemberEmail(),member.getMemberPwd(),new ArrayList<>());
+		 RequestContextHolder.getRequestAttributes().setAttribute("loginUserInfo", user, RequestAttributes.SCOPE_SESSION);
+		 
+		 return UserDetailsImpl.build(user);
 	}
 
 }
