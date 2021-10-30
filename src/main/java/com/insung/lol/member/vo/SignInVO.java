@@ -9,5 +9,5 @@ public class SignInVO {
 	@NotBlank
 	private String memberEmail;
 	@NotBlank
-	private String MemberPwd;
+	private String memberPwd;
 }
