@@ -1,6 +1,8 @@
 package com.insung.lol.member.service;
 
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 	MemberService memberService;
 	
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 		 Member user = memberService.findMemberByEmail(userEmail)
 					.orElseThrow(() -> new UsernameNotFoundException("User Not Found with userId: " + userEmail));

@@ -133,7 +133,6 @@ public class MemberController extends BaseController {
 	*/
 	@PostMapping("/auth/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInVO signInReq) {
-		log.info("테스트" + signInReq);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(signInReq.getMemberEmail(), signInReq.getMemberPwd()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
