@@ -17,35 +17,37 @@ public class UserDetailsImpl implements UserDetails {
 	private Long userSeq;
 	private String userEmail;
 	private String userRealName;
+	private String addr;
 	
 	@JsonIgnore
 	private String userPwd;
-	
+
 	private Collection<? extends GrantedAuthority> authorities;
-	
+
 	private String roleCode;
-	
-	public UserDetailsImpl(Long userSeq, String userEmail, String userRealName, String userPwd, Collection<? extends GrantedAuthority> authorities) {
+
+	public UserDetailsImpl(Long userSeq, String userEmail, String userRealName, String userPwd, String addr, Collection<? extends GrantedAuthority> authorities) {
 		this.userSeq = userSeq;
 		this.userEmail = userEmail;
 		this.userRealName = userRealName;
 		this.userPwd = userPwd;
+		this.addr = addr;
 		this.authorities = authorities;
 	}
 
 	public static UserDetailsImpl build(Member member) {
 		List<GrantedAuthority> authorities = member.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getRoleName().name())).collect(Collectors.toList());
-		
+
 		return new UserDetailsImpl(member.getMemberSeq(), member.getMemberEmail(), member.getMemberName()
-				, member.getMemberPwd(), authorities);
+				, member.getMemberPwd(), member.getMemberAddr(), authorities);
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
-	
+
 	public Long getUserSeq() {
 		return userSeq;
 	}
@@ -67,13 +69,21 @@ public class UserDetailsImpl implements UserDetails {
 	public String getUserRealName() {
 		return userRealName;
 	}
-	
+
 	public void setUserRealName(String userRealName) {
 		this.userRealName = userRealName;
 	}
-	
+
 	public String getRoleCode() {
 		return roleCode;
+	}
+
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+	
+	public String getAddr() {
+		return addr;
 	}
 	
 	@Override

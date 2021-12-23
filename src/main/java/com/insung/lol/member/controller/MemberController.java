@@ -148,6 +148,7 @@ public class MemberController extends BaseController {
 				boUserDetails.getUserSeq(), 
 				boUserDetails.getUsername(), 
 				boUserDetails.getUserRealName(),
+				boUserDetails.getAddr(),
 				 roles,
 				 token, refreshToken));
 	}
