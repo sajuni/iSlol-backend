@@ -187,7 +187,6 @@ public class MemberController extends BaseController {
 	@PostMapping(value = "/auth/refreshtoken")
 	public ResponseEntity<?> refreshToken(HttpServletRequest request) {
 		String headerAuth = request.getHeader("Authorization");
-		System.out.println("테스트: " + headerAuth);
 		if (StringUtils.isNotEmpty(headerAuth) && headerAuth.startsWith("Bearer ")) {
 			String refreshToken = headerAuth.substring(7, headerAuth.length());
 			try {

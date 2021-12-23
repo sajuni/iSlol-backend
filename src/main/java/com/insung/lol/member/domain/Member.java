@@ -1,9 +1,12 @@
 package com.insung.lol.member.domain;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,8 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.insung.lol.notice.domain.Notice;
 
 import lombok.Data;
 
@@ -43,6 +49,9 @@ public class Member implements Cloneable {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "TB_MEM_ROLES", joinColumns = @JoinColumn(name = "MEMBER_SEQ"), inverseJoinColumns = @JoinColumn(name = "ROLE_SEQ"))
 	private Set<MemberRoles> roles = new HashSet<>();
+	
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Notice> notice = new ArrayList<Notice>();
 	
 	public Member() {
 	}
