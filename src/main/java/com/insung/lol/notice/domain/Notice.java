@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,6 +48,7 @@ public class Notice {
 	@Column(name = "VIEW_CNT", length = 10, nullable = false, columnDefinition = "integer default 0")
 	private String viewCnt;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "USE_YN", length = 1, nullable = false, columnDefinition = "enum('N', 'Y') default 'Y'")
 	private YNEnum useYn;
 	
