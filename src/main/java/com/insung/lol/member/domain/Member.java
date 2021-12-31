@@ -53,8 +53,7 @@ public class Member implements Cloneable {
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Notice> notice = new ArrayList<Notice>();
 	
-	public Member() {
-	}
+	public Member() {}
 	
 	public Member(String memberEmail, String memberPwd, 
 			String memberName, String memberAddr) {

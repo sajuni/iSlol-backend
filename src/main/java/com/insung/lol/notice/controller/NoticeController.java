@@ -2,11 +2,14 @@ package com.insung.lol.notice.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.insung.lol.common.BaseController;
 import com.insung.lol.notice.domain.Notice;
-import com.insung.lol.notice.service.NoticeService;
+import com.insung.lol.notice.dto.NoticeDTO;
+import com.insung.lol.notice.service.NoticeServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,21 +39,35 @@ import lombok.extern.slf4j.Slf4j;
 public class NoticeController extends BaseController{
 	
 	@Autowired
-	private NoticeService noticeService;
+	private NoticeServiceImpl noticeService;
 	
-	@PostMapping("/all/list")
+	@PostMapping("/list")
 	public ResponseEntity<?> getNoticeList(@RequestBody Map<String, Object> reqParam) {
 		log.info("start getNoticeList");
-		System.out.println(reqParam.get("pageNum"));
+		
 		int pageNum = (int)(reqParam.get("pageNum") == null ? 0 : reqParam.get("pageNum"));
 		int itemPerPage = (int)(reqParam.get("itemPerPage") == null ? 1 : reqParam.get("itemPerPage"));
 		
-		Page<Notice> noticeList = noticeService.getNoticeList(PageRequest.of(pageNum, itemPerPage));
+		Page<NoticeDTO> noticeList = noticeService.getNoticeList(PageRequest.of(pageNum, itemPerPage));
 		
 		log.info("end getNoticeList" + noticeList);
-		
 		Map<String, Object> responseData = new HashMap<String, Object>();
 		responseData.put("noticeList", noticeList);
+		return getResponseEntity(responseData);
+	}
+	
+	@GetMapping("/detail/{id}")
+	public ResponseEntity<?> getNoticeDetail(@PathVariable("id") Long id) {
+		Optional<Notice> result = noticeService.getNoticeDetail(id);
+		Notice notice = new Notice();
+		result.ifPresent(u -> {
+			notice.setNoticeSeq(u.getNoticeSeq());
+			notice.setTitle(u.getTitle());
+			notice.setContent(u.getContent());
+			notice.setRegDate(u.getRegDate());
+		});
+		Map<String, Object> responseData = new HashMap<String, Object>();
+		responseData.put("detail", result);
 		return getResponseEntity(responseData);
 	}
 	
