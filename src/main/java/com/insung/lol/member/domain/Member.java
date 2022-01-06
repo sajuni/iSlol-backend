@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.insung.lol.notice.domain.Notice;
+import com.insung.lol.video.domain.Video;
 
 import lombok.Data;
 
@@ -28,12 +29,12 @@ import lombok.Data;
 @Entity
 @Table(name = "TB_MEMBER", uniqueConstraints = { @UniqueConstraint(columnNames = "MEMBER_EMAIL") })
 public class Member implements Cloneable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "MEMBER_SEQ")
 	private Long memberSeq;
-	
+
 	@Column(name = "MEMBER_EMAIL", length = 50, nullable = false)
 	private String memberEmail;
 
@@ -42,20 +43,23 @@ public class Member implements Cloneable {
 
 	@Column(name = "MEMBER_Name", length = 10, nullable = false)
 	private String memberName;
-	
-	@Column(name = "MEMBER_ADDR", length = 255, nullable = false)
+
+	@Column(name = "MEMBER_ADDR", length = 255, nullable = true)
 	private String memberAddr;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "TB_MEM_ROLES", joinColumns = @JoinColumn(name = "MEMBER_SEQ"), inverseJoinColumns = @JoinColumn(name = "ROLE_SEQ"))
-	private Set<MemberRoles> roles = new HashSet<>();
-	
+	private Set<MemberRoles> roles = new HashSet<MemberRoles>();
+
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Notice> notice = new ArrayList<Notice>();
-	
+
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Video> video = new ArrayList<Video>();
+
 	public Member() {}
-	
-	public Member(String memberEmail, String memberPwd, 
+
+	public Member(String memberEmail, String memberPwd,
 			String memberName, String memberAddr) {
 		this.memberEmail		= memberEmail;
 		this.memberPwd 			= memberPwd;
@@ -67,5 +71,5 @@ public class Member implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-	
+
 }

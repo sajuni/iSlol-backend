@@ -1,5 +1,6 @@
 package com.insung.lol.auth.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,16 +20,16 @@ import com.insung.lol.auth.security.jwt.JwtAuthenticationEntryPoint;
 import com.insung.lol.member.service.JwtUserDetailsService;
 
 
-/** 
-* @packageName 	: com.insung.lol.auth.config 
-* @fileName 	: SecurityConfig.java 
+/**
+* @packageName 	: com.insung.lol.auth.config
+* @fileName 	: SecurityConfig.java
 * @author 		: Seung Hyo
-* @date 		: 2021.10.29 
+* @date 		: 2021.10.29
 * @description 	: web시큐리티. 인중권한 체크 URL패턴 및 패스워드 암호화 설정
-* =========================================================== 
-* DATE 			AUTHOR 		NOTE 
-* ----------------------------------------------------------- 
-* 2021.10.29 	Seung Hyo 	최초 생성 
+* ===========================================================
+* DATE 			AUTHOR 		NOTE
+* -----------------------------------------------------------
+* 2021.10.29 	Seung Hyo 	최초 생성
 */
 @Configuration
 @EnableWebSecurity
@@ -36,7 +37,11 @@ import com.insung.lol.member.service.JwtUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
+	
 	@Autowired
 	JwtUserDetailsService userDetailsService;
 

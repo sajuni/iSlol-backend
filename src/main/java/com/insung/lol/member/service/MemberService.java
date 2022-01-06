@@ -11,17 +11,17 @@ import com.insung.lol.member.repository.MemberRepository;
 
 @Service
 public class MemberService {
-	
+
 	MemberRepository memberRepository;
 	PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
 		this.memberRepository 	= memberRepository;
 		this.passwordEncoder 	= passwordEncoder;
 	}
-	
-	
+
+
 	public Optional<Member> findMemberByEmail(String email) {
 		Optional<Member> aleadyMember = memberRepository.findByMemberEmail(email);
 		return aleadyMember;

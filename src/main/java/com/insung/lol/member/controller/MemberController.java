@@ -40,16 +40,16 @@ import com.insung.lol.member.vo.SignUpVO;
 import lombok.extern.slf4j.Slf4j;
 
 
-/** 
-* @packageName 	: com.insung.lol.member.controller 
-* @fileName 	: MemberController.java 
+/**
+* @packageName 	: com.insung.lol.member.controller
+* @fileName 	: MemberController.java
 * @author 		: Seung Hyo
-* @date 		: 2021.10.29 
+* @date 		: 2021.10.29
 * @description 	: 회원 관련 컨트롤러
-* =========================================================== 
-* DATE 			AUTHOR 		NOTE 
-* ----------------------------------------------------------- 
-* 2021.10.29 	Seung Hyo 	최초 생성 
+* ===========================================================
+* DATE 			AUTHOR 		NOTE
+* -----------------------------------------------------------
+* 2021.10.29 	Seung Hyo 	최초 생성
 */
 
 @Slf4j
@@ -59,40 +59,40 @@ public class MemberController extends BaseController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private MemberRepository memberRepository;
-	
+
 	@Autowired
 	private MemberRoleRepository memberRoleRepository;
-	
+
 	@Autowired
 	private PasswordEncoder encoder;
-	
+
 	@Autowired
 	private JwtUtils jwtUtils;
-	
-	
-	/** 
-	* @methodName 	: registerUser 
-	* @author 		: Seung Hyo 
+
+
+	/**
+	* @methodName 	: registerUser
+	* @author 		: Seung Hyo
 	* @description 	: 회원가입
-	* @date 		: 2021.10.29 
+	* @date 		: 2021.10.29
 	* @param signUpReq
 	* @return
-	* @throws BizException 
+	* @throws BizException
 	*/
 	@PostMapping("/auth/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpVO signUpReq) throws BizException {
 		if(memberRepository.existsByMemberEmail(signUpReq.getEmail())) {
 			throw new BizException("signup001", "중복된 이메일 입니다.");
 		}
-		
-		Member member = new Member(signUpReq.getEmail(), encoder.encode(signUpReq.getPwd()), 
+
+		Member member = new Member(signUpReq.getEmail(), encoder.encode(signUpReq.getPwd()),
 				signUpReq.getName(), signUpReq.getAddr());
 		Set<String> strRoles = signUpReq.getRole();
 		Set<MemberRoles> memberRoles = new HashSet<>();
-		
+
 		if (strRoles == null) {
 			MemberRoles memberRole = memberRoleRepository.findByRoleName(MemberERole.ROLE_USER)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -113,23 +113,23 @@ public class MemberController extends BaseController {
 				}
 			});
 		}
-		
-	
+
+
 		member.setRoles(memberRoles);
-		
+
 		memberRepository.save(member);
-		
+
 		return getResponseEntity(new MessageResponse("회원가입 성공!"));
-		
+
 	}
-	
-	/** 
-	* @methodName 	: authenticateUser 
-	* @author 		: Seung Hyo 
+
+	/**
+	* @methodName 	: authenticateUser
+	* @author 		: Seung Hyo
 	* @description 	: 로그인
-	* @date 		: 2021.10.29 
+	* @date 		: 2021.10.29
 	* @param signInReq
-	* @return 
+	* @return
 	*/
 	@PostMapping("/auth/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInVO signInReq) {
@@ -138,33 +138,33 @@ public class MemberController extends BaseController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String token = jwtUtils.generateJwtToken(authentication);
 		String refreshToken = jwtUtils.generateRefreshJwtToken(token);
-		
+
 		UserDetailsImpl boUserDetails = (UserDetailsImpl) authentication.getPrincipal();
 		List<String> roles = boUserDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
 		return getResponseEntity(new JwtResponse(
-				boUserDetails.getUserSeq(), 
-				boUserDetails.getUsername(), 
+				boUserDetails.getUserSeq(),
+				boUserDetails.getUsername(),
 				boUserDetails.getUserRealName(),
 				boUserDetails.getAddr(),
 				 roles,
 				 token, refreshToken));
 	}
-	
-	/** 
-	* @methodName 	: validatejwt 
-	* @author 		: Seung Hyo 
+
+	/**
+	* @methodName 	: validatejwt
+	* @author 		: Seung Hyo
 	* @description 	: 토큰 유효성 체크
-	* @date 		: 2021.10.29 
+	* @date 		: 2021.10.29
 	* @param request
 	* @param jwtTokenReq
-	* @return 
+	* @return
 	*/
 	@PostMapping(value = "/auth/validatejwttoken")
 	public ResponseEntity<?> validatejwt(HttpServletRequest request, @RequestBody JwtTokenReq jwtTokenReq) {
-		HashMap<String, Object> responseMap = new HashMap<String, Object>();
+		HashMap<String, Object> responseMap = new HashMap<>();
 			try {
 				if(jwtUtils.validateJwtToken(jwtTokenReq.getRefreshtoken())) {
 					responseMap.put("isValidateJwtToken", true);
@@ -176,14 +176,14 @@ public class MemberController extends BaseController {
 		responseMap.put("isValidateJwtToken", false);
 		return getResponseEntity(responseMap);
 	}
-	
-	/** 
-	* @methodName 	: refreshToken 
-	* @author 		: Seung Hyo 
+
+	/**
+	* @methodName 	: refreshToken
+	* @author 		: Seung Hyo
 	* @description 	: 리프레시 토큰으로 토큰 재발급
-	* @date 		: 2021.10.29 
+	* @date 		: 2021.10.29
 	* @param request
-	* @return 
+	* @return
 	*/
 	@PostMapping(value = "/auth/refreshtoken")
 	public ResponseEntity<?> refreshToken(HttpServletRequest request) {
@@ -194,7 +194,7 @@ public class MemberController extends BaseController {
 				if(jwtUtils.validateJwtToken(refreshToken)) {
 					String newToken = jwtUtils.generateJwtToken(refreshToken);
 					String newRefreshToken = jwtUtils.generateRefreshJwtToken(newToken);
-					HashMap<String, String> tokens = new HashMap<String, String>();
+					HashMap<String, String> tokens = new HashMap<>();
 					tokens.put("token", newToken);
 					tokens.put("refreshToken", newRefreshToken);
 					return getResponseEntity(tokens);
@@ -204,10 +204,10 @@ public class MemberController extends BaseController {
 			} catch (Exception e) {
 				log.error("refreshToken Exception", e);
 			}
-			
-		} 
-		
+
+		}
+
 		return null;
 	}
-	
+
 }

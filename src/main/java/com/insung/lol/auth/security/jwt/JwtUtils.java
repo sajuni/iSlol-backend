@@ -34,17 +34,17 @@ public class JwtUtils {
 
 	@Value("${jwt.expired.jwtExpirationMs}")
 	private int jwtExpirationMs;
-	
+
 	@Value("${jwt.expired.rjwtExpirationMs}")
 	private int rjwtExpirationMs;
-	
+
 	@Autowired
 	private UserService userService;
 
 	/**
 	 * generateJwtToken <br/>
 	 * jwt 토큰 생성
-	 * 
+	 *
 	 */
 	public String generateJwtToken(Authentication authentication) {
 
@@ -54,11 +54,11 @@ public class JwtUtils {
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
-	
+
 	/**
 	 * generateJwtToken <br/>
 	 * jwt 리프레시 토큰 생성
-	 * 
+	 *
 	 */
 	public String generateJwtToken(String token) {
 		String username = getUserNameFromJwtToken(token);
@@ -70,7 +70,7 @@ public class JwtUtils {
 	/**
 	 * getUserNameFromJwtToken <br/>
 	 * jwt토큰으로 userId 조회
-	 * 
+	 *
 	 */
 	public String getUserNameFromJwtToken(String token) {
 		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
@@ -79,7 +79,7 @@ public class JwtUtils {
 	/**
 	 * validateJwtToken <br/>
 	 * jwt토큰 유효성 체크
-	 * 
+	 *
 	 */
 	public boolean validateJwtToken(String authToken) {
 		try {
@@ -99,11 +99,11 @@ public class JwtUtils {
 
 		return false;
 	}
-	
+
 	/**
 	 * validateJwtToken <br/>
 	 * jwt토큰으로 리프레시토큰 생성
-	 * 
+	 *
 	 */
 	public String generateRefreshJwtToken(String token) {
 		String username = getUserNameFromJwtToken(token);
@@ -115,36 +115,36 @@ public class JwtUtils {
 				.signWith(SignatureAlgorithm.HS512, jwtSecret)
 				.compact();
 	}
-	
+
 	/**
 	 * getTokenUserInfoByHttpRequest <br/>
 	 * http request의 헤더의 jwt토큰으로 사용자정보 조회
-	 * 
+	 *
 	 */
 	public Member getTokenUserInfoByHttpRequest(HttpServletRequest request) {
 		String jwt = getJwtToken(request);
 		if (jwt != null && validateJwtToken(jwt)) {
 			String userId = getUserNameFromJwtToken(jwt);
 			Member userInfo = userService.getUserInfo(userId);
-			
+
 			return userInfo;
 		}
 		return null;
 	}
-	
+
 	/**
 	 * getUserIdByHttpRequest <br/>
 	 * http request의 헤더의 jwt토큰으로 사용자ID 조회
-	 * 
+	 *
 	 */
 	public String getUserIdByHttpRequest(HttpServletRequest request) {
 		return getUserNameFromJwtToken(getJwtToken(request));
 	}
-	
+
 	/**
 	 * getJwtToken <br/>
 	 * http request의 헤더의 jwt토큰조회
-	 * 
+	 *
 	 */
 	public String getJwtToken(HttpServletRequest request) {
 		String headerAuth = request.getHeader("Authorization");
@@ -155,14 +155,14 @@ public class JwtUtils {
 
 		return null;
 	}
-	
+
 	/**
 	 * getLoginUserEntity <br/>
 	 * ContextHolder 에서 사용자정보 조회
-	 * 
+	 *
 	 */
-	public UserDetailsImpl getLoginUserEntity() {
-		return (UserDetailsImpl)RequestContextHolder.getRequestAttributes().getAttribute("loginUserInfo", RequestAttributes.SCOPE_SESSION);
+	public Member getLoginUserEntity() {
+		return (Member)RequestContextHolder.getRequestAttributes().getAttribute("loginUserInfo", RequestAttributes.SCOPE_SESSION);
 	}
 }
 

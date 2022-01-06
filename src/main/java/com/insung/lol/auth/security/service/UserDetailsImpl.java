@@ -18,7 +18,7 @@ public class UserDetailsImpl implements UserDetails {
 	private String userEmail;
 	private String userRealName;
 	private String addr;
-	
+
 	@JsonIgnore
 	private String userPwd;
 
@@ -81,11 +81,11 @@ public class UserDetailsImpl implements UserDetails {
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
-	
+
 	public String getAddr() {
 		return addr;
 	}
-	
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;

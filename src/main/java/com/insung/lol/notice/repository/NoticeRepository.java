@@ -14,8 +14,13 @@ import com.insung.lol.notice.domain.Notice;
 public interface NoticeRepository extends JpaRepository<Notice, Long>{
 
 	Page<Notice> findAllByUseYn(YNEnum Y, Pageable pageable);
-	
+
+	@Override
 	Optional<Notice> findById(Long id);
-	
+
+	@Override
+	@SuppressWarnings("unchecked")
+	Notice save(Notice entity);
+
 }
 

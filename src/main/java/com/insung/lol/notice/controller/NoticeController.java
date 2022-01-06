@@ -22,40 +22,48 @@ import com.insung.lol.notice.service.NoticeServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
-/** 
-* @packageName 	: com.insung.lol.notice.controller 
-* @fileName 	: NoticeController.java 
+/**
+* @packageName 	: com.insung.lol.notice.controller
+* @fileName 	: NoticeController.java
 * @author 		: Seung Hyo
-* @date 		: 2021.11.21 
+* @date 		: 2021.11.21
 * @description 	: 공지사항 컨트롤러
-* =========================================================== 
-* DATE 			AUTHOR 		NOTE 
-* ----------------------------------------------------------- 
-* 2021.11.21 	Seung Hyo 	최초 생성 
+* ===========================================================
+* DATE 			AUTHOR 		NOTE
+* -----------------------------------------------------------
+* 2021.11.21 	Seung Hyo 	최초 생성
 */
 @RestController
 @RequestMapping("/api/notice")
 @Slf4j
-public class NoticeController extends BaseController{
-	
+public class NoticeController extends BaseController {
+
 	@Autowired
 	private NoticeServiceImpl noticeService;
-	
+
 	@PostMapping("/list")
 	public ResponseEntity<?> getNoticeList(@RequestBody Map<String, Object> reqParam) {
 		log.info("start getNoticeList");
-		
+
 		int pageNum = (int)(reqParam.get("pageNum") == null ? 0 : reqParam.get("pageNum"));
 		int itemPerPage = (int)(reqParam.get("itemPerPage") == null ? 1 : reqParam.get("itemPerPage"));
-		
+
 		Page<NoticeDTO> noticeList = noticeService.getNoticeList(PageRequest.of(pageNum, itemPerPage));
-		
-		log.info("end getNoticeList" + noticeList);
-		Map<String, Object> responseData = new HashMap<String, Object>();
+		log.info("end getNoticeList");
+		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("noticeList", noticeList);
 		return getResponseEntity(responseData);
 	}
-	
+
+	@PostMapping("/save")
+	public ResponseEntity<?> saveNotice(@RequestBody NoticeDTO noticeDTO) {
+		Notice result = noticeService.save(noticeDTO);
+
+		Map<String, Object> responseData = new HashMap<>();
+		responseData.put("saveEntity", result);
+		return getResponseEntity(responseData);
+	}
+
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("id") Long id) {
 		Optional<Notice> result = noticeService.getNoticeDetail(id);
@@ -64,11 +72,10 @@ public class NoticeController extends BaseController{
 			notice.setNoticeSeq(u.getNoticeSeq());
 			notice.setTitle(u.getTitle());
 			notice.setContent(u.getContent());
-			notice.setRegDate(u.getRegDate());
 		});
-		Map<String, Object> responseData = new HashMap<String, Object>();
+		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("detail", result);
 		return getResponseEntity(responseData);
 	}
-	
+
 }

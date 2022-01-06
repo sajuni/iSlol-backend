@@ -1,4 +1,4 @@
-package com.insung.lol.notice.domain;
+package com.insung.lol.video.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,47 +10,44 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.insung.lol.common.domain.BaseTimeEntity;
 import com.insung.lol.common.dto.YNEnum;
 import com.insung.lol.member.domain.Member;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
-@Table(name = "TB_NOTICE")
-public class Notice extends BaseTimeEntity {
+@Table(name = "TB_VIDEO")
+@ToString(exclude = {"member"})
+public class Video extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "NOTICE_SEQ")
-	private Long noticeSeq;
+	@Column(name = "VIDEO_SEQ")
+	private Long videoSeq;
 
-	@Column(name = "TITLE", length = 100, nullable = false)
-	private String title;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonBackReference
+	@JoinColumn(name = "MEMBER_SEQ", nullable = false)
+	private Member member;
 
-	@Column(name = "CONTENT", length = 500, nullable = false)
-	private String content;
+	@Column(name = "URL", length = 50, nullable = false)
+	private String videoUrl;
 
-	@Column(name = "VIEW_CNT", length = 10, nullable = true, columnDefinition = "integer default 0")
-	private String viewCnt;
+	@Column(name = "NAME", length = 10, nullable = false)
+	private String name;
+
+	@Column(name = "DSCRP", length = 50, nullable = true)
+	private String dscrp;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "USE_YN", length = 1, nullable = true, columnDefinition = "enum('N', 'Y') default 'Y'")
 	private YNEnum useYn;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-//	@JsonBackReference
-	@JoinColumn(name = "MEMBER_SEQ")
-	private Member member;
-
-	@PrePersist
-	public void prePersist() {
-		this.viewCnt = this.viewCnt == null ? "0" : this.viewCnt;
-		this.useYn = this.useYn == null ? YNEnum.Y : this.useYn;
-	}
 
 }
