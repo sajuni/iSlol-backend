@@ -56,7 +56,7 @@
 	</appender>
 
 	<!-- root레벨 설정 --> 
-	<root level="${LOG_LEVEL}"> 
+	<root level="INFO"> 
 		<appender-ref ref="CONSOLE"/> 
 		<appender-ref ref="FILE"/>
 		<!-- <appender-ref ref="Error"/> --> 
