@@ -1,9 +1,11 @@
 package com.insung.lol.common;
 
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 * 2021.10.29 	Seung Hyo 	최초 생성
 */
 @Slf4j
+@Controller
 public class BaseController {
 
 	/**
