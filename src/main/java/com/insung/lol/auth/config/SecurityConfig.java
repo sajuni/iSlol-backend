@@ -1,5 +1,8 @@
 package com.insung.lol.auth.config;
 
+import com.insung.lol.auth.security.jwt.AuthTokenFilter;
+import com.insung.lol.auth.security.jwt.JwtAuthenticationEntryPoint;
+import com.insung.lol.member.service.JwtUserDetailsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +17,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.insung.lol.auth.security.jwt.AuthTokenFilter;
-import com.insung.lol.auth.security.jwt.JwtAuthenticationEntryPoint;
-import com.insung.lol.member.service.JwtUserDetailsService;
 
 
 /**
@@ -39,7 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public ModelMapper modelMapper() {
-		return new ModelMapper();
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setSkipNullEnabled(true);
+		return modelMapper;
 	}
 	
 	@Autowired

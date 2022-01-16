@@ -23,17 +23,20 @@ public class JwtResponse {
 	private String email;
 	private String userNm;
 	private String addr;
+	private String nick;
 	private List<String> roles;
 	private String token;
 	private String refreshToken;
 
-	public JwtResponse(Long id, String email, String userNm, String addr, List<String> roles, String token,
+
+	public JwtResponse(Long id, String email, String userNm, String addr, String nick, List<String> roles, String token,
 			String refreshToken) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.userNm = userNm;
 		this.addr = addr;
+		this.nick = nick;
 		this.roles = roles;
 		this.token = token;
 		this.refreshToken = refreshToken;

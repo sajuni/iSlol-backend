@@ -1,27 +1,5 @@
 package com.insung.lol.member.controller;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.insung.lol.auth.payload.request.JwtTokenReq;
 import com.insung.lol.auth.payload.response.JwtResponse;
 import com.insung.lol.auth.payload.response.MessageResponse;
@@ -32,12 +10,30 @@ import com.insung.lol.common.exception.BizException;
 import com.insung.lol.member.domain.Member;
 import com.insung.lol.member.domain.MemberERole;
 import com.insung.lol.member.domain.MemberRoles;
-import com.insung.lol.member.repository.MemberRepository;
+import com.insung.lol.member.dto.MemberUpdateDTO;
 import com.insung.lol.member.repository.MemberRoleRepository;
+import com.insung.lol.member.service.MemberService;
 import com.insung.lol.member.vo.SignInVO;
 import com.insung.lol.member.vo.SignUpVO;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -54,14 +50,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/user/auth")
 public class MemberController extends BaseController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
-	private MemberRepository memberRepository;
+	private MemberService memberService;
 
 	@Autowired
 	private MemberRoleRepository memberRoleRepository;
@@ -72,6 +68,8 @@ public class MemberController extends BaseController {
 	@Autowired
 	private JwtUtils jwtUtils;
 
+	@Autowired
+	private ModelMapper modelMapper;
 
 	/**
 	* @methodName 	: registerUser
@@ -82,13 +80,13 @@ public class MemberController extends BaseController {
 	* @return
 	* @throws BizException
 	*/
-	@PostMapping("/auth/signup")
+	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpVO signUpReq) throws BizException {
-		if(memberRepository.existsByMemberEmail(signUpReq.getEmail())) {
+		if(memberService.existsByMemberEmail(signUpReq.getEmail())) {
 			throw new BizException("signup001", "중복된 이메일 입니다.");
 		}
 		Member member = new Member(signUpReq.getEmail(), encoder.encode(signUpReq.getPwd()),
-				signUpReq.getName(), signUpReq.getAddr());
+				signUpReq.getName(), signUpReq.getAddr(), signUpReq.getNick());
 		Set<String> strRoles = signUpReq.getRole();
 		Set<MemberRoles> memberRoles = new HashSet<>();
 
@@ -116,7 +114,7 @@ public class MemberController extends BaseController {
 
 		member.setRoles(memberRoles);
 
-		memberRepository.save(member);
+		memberService.save(member);
 
 		return getResponseEntity(new MessageResponse("회원가입 성공!"));
 
@@ -130,7 +128,7 @@ public class MemberController extends BaseController {
 	* @param signInReq
 	* @return
 	*/
-	@PostMapping("/auth/signin")
+	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInVO signInReq) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(signInReq.getMemberEmail(), signInReq.getMemberPwd()));
@@ -148,6 +146,7 @@ public class MemberController extends BaseController {
 				boUserDetails.getUsername(),
 				boUserDetails.getUserRealName(),
 				boUserDetails.getAddr(),
+			    boUserDetails.getUserNickName(),
 				 roles,
 				 token, refreshToken));
 	}
@@ -161,7 +160,7 @@ public class MemberController extends BaseController {
 	* @param jwtTokenReq
 	* @return
 	*/
-	@PostMapping(value = "/auth/validatejwttoken")
+	@PostMapping(value = "/validatejwttoken")
 	public ResponseEntity<?> validatejwt(HttpServletRequest request, @RequestBody JwtTokenReq jwtTokenReq) {
 		HashMap<String, Object> responseMap = new HashMap<>();
 			try {
@@ -184,7 +183,7 @@ public class MemberController extends BaseController {
 	* @param request
 	* @return
 	*/
-	@PostMapping(value = "/auth/refreshtoken")
+	@PostMapping(value = "/refreshtoken")
 	public ResponseEntity<?> refreshToken(HttpServletRequest request) {
 		String headerAuth = request.getHeader("Authorization");
 		if (StringUtils.isNotEmpty(headerAuth) && headerAuth.startsWith("Bearer ")) {
@@ -207,6 +206,16 @@ public class MemberController extends BaseController {
 		}
 
 		return null;
+	}
+	
+	@PutMapping(value = "{id}/update")
+	public ResponseEntity<?> changePassword(@PathVariable("id") Long id, @RequestBody MemberUpdateDTO memberDTO) throws BizException {
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(memberDTO.getMemberEmail(), memberDTO.getMemberoldPwd()));
+		Member result = memberService.update(id, memberDTO);
+		HashMap<String, Object> responseMap = new HashMap<>();
+		responseMap.put("update", result);
+		return getResponseEntity(responseMap);
 	}
 
 }

@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.insung.lol.member.projection.MemberDTOP;
 import com.insung.lol.notice.domain.Notice;
 import com.insung.lol.video.domain.Video;
 
@@ -47,29 +48,43 @@ public class Member implements Cloneable {
 	@Column(name = "MEMBER_ADDR", length = 255, nullable = true)
 	private String memberAddr;
 
+	@Column(name = "MEMBER_NICK", length = 10, nullable = true)
+	private String memberNick;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "TB_MEM_ROLES", joinColumns = @JoinColumn(name = "MEMBER_SEQ"), inverseJoinColumns = @JoinColumn(name = "ROLE_SEQ"))
-	private Set<MemberRoles> roles = new HashSet<MemberRoles>();
+	private Set<MemberRoles> roles = new HashSet<>();
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<Notice> notice = new ArrayList<Notice>();
+	private List<Notice> notice = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<Video> video = new ArrayList<Video>();
+	private List<Video> video = new ArrayList<>();
 
 	public Member() {}
 
 	public Member(String memberEmail, String memberPwd,
-			String memberName, String memberAddr) {
+			String memberName, String memberAddr, String memberNick) {
 		this.memberEmail		= memberEmail;
 		this.memberPwd 			= memberPwd;
 		this.memberName 		= memberName;
 		this.memberAddr			= memberAddr;
+		this.memberNick			= memberNick;
 	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
+
+	public Member(MemberDTOP mem) {
+		this.memberSeq			= mem.getMemberSeq();
+		this.memberEmail		= mem.getMemberEmail();
+		this.memberPwd 			= mem.getMemberPwd();
+		this.memberName 		= mem.getMemberName();
+		this.memberAddr			= mem.getMemberAddr();
+		this.memberNick			= mem.getMemberNick();
+	}
+
 
 }

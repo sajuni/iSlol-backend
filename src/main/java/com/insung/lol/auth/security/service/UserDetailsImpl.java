@@ -18,6 +18,7 @@ public class UserDetailsImpl implements UserDetails {
 	private String userEmail;
 	private String userRealName;
 	private String addr;
+	private String userNickName;
 
 	@JsonIgnore
 	private String userPwd;
@@ -26,12 +27,13 @@ public class UserDetailsImpl implements UserDetails {
 
 	private String roleCode;
 
-	public UserDetailsImpl(Long userSeq, String userEmail, String userRealName, String userPwd, String addr, Collection<? extends GrantedAuthority> authorities) {
+	public UserDetailsImpl(Long userSeq, String userEmail, String userRealName, String userPwd, String addr, String userNickName, Collection<? extends GrantedAuthority> authorities) {
 		this.userSeq = userSeq;
 		this.userEmail = userEmail;
 		this.userRealName = userRealName;
 		this.userPwd = userPwd;
 		this.addr = addr;
+		this.userNickName = userNickName;
 		this.authorities = authorities;
 	}
 
@@ -40,7 +42,7 @@ public class UserDetailsImpl implements UserDetails {
 				.map(role -> new SimpleGrantedAuthority(role.getRoleName().name())).collect(Collectors.toList());
 
 		return new UserDetailsImpl(member.getMemberSeq(), member.getMemberEmail(), member.getMemberName()
-				, member.getMemberPwd(), member.getMemberAddr(), authorities);
+				, member.getMemberPwd(), member.getMemberAddr(), member.getMemberNick(), authorities);
 	}
 
 	@Override
@@ -65,6 +67,13 @@ public class UserDetailsImpl implements UserDetails {
 	public String getUsername() {
 		return userEmail;
 	}
+
+	public String getUserNickName() { return userNickName; }
+
+	public void setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
+	}
+
 
 	public String getUserRealName() {
 		return userRealName;

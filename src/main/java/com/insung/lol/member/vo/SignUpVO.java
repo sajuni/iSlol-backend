@@ -27,15 +27,13 @@ public class SignUpVO {
 	@NotBlank
 	@Email
 	private String email;
-
 	@NotBlank
 	private String name;
-
 	@NotBlank
 	@Size(min = 6, max = 40)
 	private String pwd;
-
 	private String addr;
+	private String nick;
 	private Set<String> role;
 
 
