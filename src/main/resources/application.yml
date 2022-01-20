@@ -1,9 +1,14 @@
 server:
   port: 8180
+  error:
+    include-stacktrace: never
 
 spring:
-  profiles:    active: local  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver    type: com.zaxxer.hikari.HikariDataSource
+  profiles:
+    active: local
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mariadb://127.0.0.1:3306/db_insung_lol?useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: 1013
@@ -13,7 +18,8 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: true  
+        format_sql: true
+  
 # logging
 logging:
   level:
@@ -26,6 +32,6 @@ logging:
 jwt:
   expired:
     jwtSecret: jwtsecret
-    jwtExpirationMs: 900000
+    jwtExpirationMs: 600000
     rjwtExpirationMs: 1800000
     

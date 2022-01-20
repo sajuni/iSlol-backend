@@ -28,11 +28,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -131,12 +129,12 @@ public class MemberController extends BaseController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInVO signInReq) {
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(signInReq.getMemberEmail(), signInReq.getMemberPwd()));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String token = jwtUtils.generateJwtToken(authentication);
-		String refreshToken = jwtUtils.generateRefreshJwtToken(token);
+				new UsernamePasswordAuthenticationToken(signInReq.getMemberEmail(), signInReq.getMemberPwd())); // 아이디 패스워드로 인증
+		SecurityContextHolder.getContext().setAuthentication(authentication); // 인증성공 정보저장
+		String token = jwtUtils.generateJwtToken(authentication); // 토큰 발급
+		String refreshToken = jwtUtils.generateRefreshJwtToken(token); // 리프레시 토큰 발급
 
-		UserDetailsImpl boUserDetails = (UserDetailsImpl) authentication.getPrincipal();
+		UserDetailsImpl boUserDetails = (UserDetailsImpl) authentication.getPrincipal(); // 인증정보매핑
 		List<String> roles = boUserDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
@@ -184,10 +182,10 @@ public class MemberController extends BaseController {
 	* @return
 	*/
 	@PostMapping(value = "/refreshtoken")
-	public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+	public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) {
 		String headerAuth = request.getHeader("Authorization");
 		if (StringUtils.isNotEmpty(headerAuth) && headerAuth.startsWith("Bearer ")) {
-			String refreshToken = headerAuth.substring(7, headerAuth.length());
+			String refreshToken = headerAuth.substring(7);
 			try {
 				if(jwtUtils.validateJwtToken(refreshToken)) {
 					String newToken = jwtUtils.generateJwtToken(refreshToken);
@@ -197,7 +195,7 @@ public class MemberController extends BaseController {
 					tokens.put("refreshToken", newRefreshToken);
 					return getResponseEntity(tokens);
 				} else {
-					throw new BizException("refreshtokenE001", "토큰이 유효하지 않습니다");
+					return getErrorEntity(new HashMap<String,String>(){{put("message","토큰이 유효하지 않습니다.");}});
 				}
 			} catch (Exception e) {
 				log.error("refreshToken Exception", e);

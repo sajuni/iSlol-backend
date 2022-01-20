@@ -41,6 +41,12 @@ public class BaseController {
 		return new ResponseEntity<>(json.toString(), HttpStatus.OK);
 	}
 
+	protected ResponseEntity<String> getErrorEntity(Object bodyObject) {
+		JSONObject json = getResponseJson(ApiConstant.RESULT_CODE_FAIL, ApiConstant.RESULT_MESSAGE_FAIL, bodyObject);
+		return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+
+	}
+
 	/**
 	 * @fileName	: getResponseJson
 	 * @author		: "sajuni11"
