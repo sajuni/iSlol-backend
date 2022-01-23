@@ -12,7 +12,7 @@ public interface NoticeService {
 
 	public Page<NoticeDTO> getNoticeList(Pageable pageable);
 
-	public Optional<Notice> getNoticeDetail(Long id);
+	public Notice getNoticeDetail(Long id);
 
 	public Notice save(NoticeDTO noticeDTO);
 

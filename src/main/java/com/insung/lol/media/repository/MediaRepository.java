@@ -1,4 +1,4 @@
-package com.insung.lol.video.repository;
+package com.insung.lol.media.repository;
 
 import java.util.List;
 
@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.insung.lol.common.dto.YNEnum;
-import com.insung.lol.video.domain.Video;
+import com.insung.lol.media.domain.Media;
 
 @Repository
-public interface VideoRepository extends JpaRepository<Video, Long>{
+public interface MediaRepository extends JpaRepository<Media, Long>{
 
-	List<Video> findAllByUseYn(YNEnum y);
+	List<Media> findAllByUseYn(YNEnum y);
 
 }

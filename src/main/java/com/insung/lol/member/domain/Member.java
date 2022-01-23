@@ -22,7 +22,7 @@ import javax.persistence.UniqueConstraint;
 
 import com.insung.lol.member.projection.MemberDTOP;
 import com.insung.lol.notice.domain.Notice;
-import com.insung.lol.video.domain.Video;
+import com.insung.lol.media.domain.Media;
 
 import lombok.Data;
 
@@ -59,7 +59,7 @@ public class Member implements Cloneable {
 	private List<Notice> notice = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<Video> video = new ArrayList<>();
+	private List<Media> video = new ArrayList<>();
 
 	public Member() {}
 

@@ -66,13 +66,8 @@ public class NoticeController extends BaseController {
 
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("id") Long id) {
-		Optional<Notice> result = noticeService.getNoticeDetail(id);
-		Notice notice = new Notice();
-		result.ifPresent(u -> {
-			notice.setNoticeSeq(u.getNoticeSeq());
-			notice.setTitle(u.getTitle());
-			notice.setContent(u.getContent());
-		});
+		Notice result = noticeService.getNoticeDetail(id);
+
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("detail", result);
 		return getResponseEntity(responseData);

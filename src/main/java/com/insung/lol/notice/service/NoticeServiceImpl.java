@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.insung.lol.auth.security.jwt.JwtUtils;
@@ -55,8 +56,15 @@ public class NoticeServiceImpl implements NoticeService {
 
 
 	@Override
-	public Optional<Notice> getNoticeDetail(Long id) {
-		return noticeRepository.findById(id);
+	public Notice getNoticeDetail(Long id) {
+		Optional<Notice> result = noticeRepository.findById(id);
+		Notice notice = new Notice();
+		result.ifPresent(u -> {
+			notice.setNoticeSeq(u.getNoticeSeq());
+			notice.setTitle(u.getTitle());
+			notice.setContent(u.getContent());
+		});
+		return notice;
 	}
 
 }

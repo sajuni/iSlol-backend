@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.insung.lol.common.domain.BaseTimeEntity;
 import com.insung.lol.common.dto.YNEnum;
 import com.insung.lol.member.domain.Member;
@@ -43,7 +44,7 @@ public class Notice extends BaseTimeEntity {
 	private YNEnum useYn;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-//	@JsonBackReference
+	@JsonBackReference
 	@JoinColumn(name = "MEMBER_SEQ")
 	private Member member;
 

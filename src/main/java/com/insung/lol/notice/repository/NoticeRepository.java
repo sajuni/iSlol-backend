@@ -19,8 +19,8 @@ public interface NoticeRepository extends JpaRepository<Notice, Long>{
 	Optional<Notice> findById(Long id);
 
 	@Override
-	@SuppressWarnings("unchecked")
 	Notice save(Notice entity);
+
 
 }
 
