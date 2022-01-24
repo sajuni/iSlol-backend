@@ -2,6 +2,7 @@ package com.insung.lol.notice.service;
 
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import com.insung.lol.notice.dto.NoticeDTO;
 import com.insung.lol.notice.repository.NoticeRepository;
 
 @Service
+@Slf4j
 public class NoticeServiceImpl implements NoticeService {
 
 	@Autowired
@@ -52,6 +54,12 @@ public class NoticeServiceImpl implements NoticeService {
 		entity.setTitle(noticeDTO.getTitle());
 
 		return noticeRepository.save(entity);
+	}
+
+	@Override
+	public void delete(Long id) {
+		log.info("게시물 {}번이 삭제 되었습니다.", id);
+		noticeRepository.deleteById(id);
 	}
 
 

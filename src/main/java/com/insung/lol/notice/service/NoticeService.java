@@ -16,4 +16,5 @@ public interface NoticeService {
 
 	public Notice save(NoticeDTO noticeDTO);
 
+	public void delete(Long id);
 }

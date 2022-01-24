@@ -209,7 +209,7 @@ public class MemberController extends BaseController {
 		return null;
 	}
 	
-	@PutMapping(value = "{id}/update")
+	@PatchMapping(value = "{id}/update")
 	public ResponseEntity<?> changePassword(@PathVariable("id") Long id, @RequestBody MemberUpdateDTO memberDTO) throws BizException {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(memberDTO.getMemberEmail(), memberDTO.getMemberoldPwd()));

@@ -24,7 +24,7 @@ public class MediaController extends BaseController {
 	private MediaServiceImpl mediaService;
 	
 
-	@GetMapping("/list")
+	@GetMapping()
 	public ResponseEntity<?> getMediaList() {
 		log.info("start getMediaList!!");
 		Map<String, List<MediaDTO>> result = mediaService.getMediaList();

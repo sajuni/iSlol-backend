@@ -4,16 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.insung.lol.common.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.insung.lol.common.BaseController;
 import com.insung.lol.notice.domain.Notice;
@@ -41,7 +37,7 @@ public class NoticeController extends BaseController {
 	@Autowired
 	private NoticeServiceImpl noticeService;
 
-	@PostMapping("/list")
+	@PostMapping()
 	public ResponseEntity<?> getNoticeList(@RequestBody Map<String, Object> reqParam) {
 		log.info("start getNoticeList");
 
@@ -64,13 +60,29 @@ public class NoticeController extends BaseController {
 		return getResponseEntity(responseData);
 	}
 
-	@GetMapping("/detail/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getNoticeDetail(@PathVariable("id") Long id) {
 		Notice result = noticeService.getNoticeDetail(id);
 
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("detail", result);
 		return getResponseEntity(responseData);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteNotice(@PathVariable("id") Long id) {
+		Map<String, Object> responseData = new HashMap<>();
+
+		try {
+			noticeService.delete(id);
+		} catch (Exception e) {
+			log.info("공지사항 삭제 실패!! {}" , e.getMessage());
+			responseData.put("delete", "게시물 " + id + "번 삭제가 실패하였습니다.");
+			return getErrorEntity(responseData);
+		}
+
+		responseData.put("delete", "게시물 " + id + "번이 삭제 되었습니다.");
+		return	getResponseEntity(responseData);
 	}
 
 }
