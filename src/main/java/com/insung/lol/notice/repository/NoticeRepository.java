@@ -16,9 +16,6 @@ public interface NoticeRepository extends JpaRepository<Notice, Long>{
 	Page<Notice> findAllByUseYn(YNEnum Y, Pageable pageable);
 
 	@Override
-	Optional<Notice> findById(Long id);
-
-	@Override
 	Notice save(Notice entity);
 
 
