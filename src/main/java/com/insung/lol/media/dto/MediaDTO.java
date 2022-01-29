@@ -15,9 +15,10 @@ public class MediaDTO {
 	private String dscrp;
 	private MEDIAEnum type;
 	private YNEnum useYn;
+	private String typeValue;
 	
 	public MediaDTO() {};
-	
+
 	public MediaDTO(MemberDTO member, Long mediaSeq, String mediaUrl, String name, String dscrp, MEDIAEnum type, YNEnum useYn) {
 		this.member = member;
 		this.mediaSeq = mediaSeq;

@@ -13,6 +13,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.insung.lol.common.constant.ApiConstant;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.BindingResult;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -44,7 +50,11 @@ public class BaseController {
 	protected ResponseEntity<String> getErrorEntity(Object bodyObject) {
 		JSONObject json = getResponseJson(ApiConstant.RESULT_CODE_FAIL, ApiConstant.RESULT_MESSAGE_FAIL, bodyObject);
 		return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+	}
 
+	protected ResponseEntity<String> getSaveEntity(Object bodyObject) {
+		JSONObject json = getResponseJson(ApiConstant.RESULT_CODE_SUCCESS, ApiConstant.RESULT_MESSAGE_SUCCESS, bodyObject);
+		return new ResponseEntity<>(json.toString(), HttpStatus.CREATED);
 	}
 
 	/**
@@ -68,5 +78,17 @@ public class BaseController {
 		}
 
 		return responsJson;
+	}
+
+
+	// 벨리데이션 에러 처리
+	protected ResponseEntity<String> getRequestEntityError(BindingResult bindingResult) {
+		List<HashMap<String, String>> collect = bindingResult.getFieldErrors().stream()
+				.map(v -> new HashMap<String, String>() {{put(v.getField(), v.getDefaultMessage());}}).collect(Collectors.toList());
+
+		log.error("리퀘스트 엔티티 에러: {}", bindingResult.getFieldError());
+		Map<String, Object> responseData = new HashMap<>();
+		responseData.put("requestError", collect);
+		return getErrorEntity(responseData);
 	}
 }

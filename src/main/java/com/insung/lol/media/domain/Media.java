@@ -54,5 +54,15 @@ public class Media extends BaseTimeEntity {
 	@Column(name = "USE_YN", length = 1, nullable = true, columnDefinition = "enum('N', 'Y') default 'Y'")
 	private YNEnum useYn;
 
+	public Media() {
+	}
 
+	public Media(Member member, String mediaUrl, String name, String dscrp, MEDIAEnum type, YNEnum useYn) {
+		this.member = member;
+		this.mediaUrl = mediaUrl;
+		this.name = name;
+		this.dscrp = dscrp;
+		this.type = type;
+		this.useYn = useYn;
+	}
 }

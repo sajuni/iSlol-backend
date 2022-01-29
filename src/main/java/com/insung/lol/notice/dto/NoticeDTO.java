@@ -11,13 +11,18 @@ import com.insung.lol.member.dto.MemberDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @JsonInclude(Include.NON_NULL)
 public class NoticeDTO {
 
 	private Long noticeSeq;
+	@NotBlank
 	private String title;
+	@NotBlank
 	private String content;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime createdDate;

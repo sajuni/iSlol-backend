@@ -1,14 +1,18 @@
 package com.insung.lol.notice.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.insung.lol.common.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.insung.lol.common.BaseController;
@@ -17,6 +21,8 @@ import com.insung.lol.notice.dto.NoticeDTO;
 import com.insung.lol.notice.service.NoticeServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
+
+import javax.validation.Valid;
 
 /**
 * @packageName 	: com.insung.lol.notice.controller
@@ -52,9 +58,11 @@ public class NoticeController extends BaseController {
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<?> saveNotice(@RequestBody NoticeDTO noticeDTO) {
+	public ResponseEntity<?> saveNotice(@RequestBody @Validated NoticeDTO noticeDTO, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()){
+			return getRequestEntityError(bindingResult);
+		}
 		Notice result = noticeService.save(noticeDTO);
-
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("saveEntity", result);
 		return getResponseEntity(responseData);
