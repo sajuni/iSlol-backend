@@ -39,4 +39,4 @@ jwt:
     rjwtExpirationMs: 18000000
 
 file:
-  dir: c:/islol/imagesss/
+  dir: c:/islol/images/
