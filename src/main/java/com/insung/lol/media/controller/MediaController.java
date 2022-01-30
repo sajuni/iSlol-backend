@@ -79,7 +79,7 @@ public class MediaController extends BaseController {
 	@GetMapping("/{filename}")
 	public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
 		log.info("파일네임: {}", filename);
-		return new UrlResource("file:" + filename);
+		return new UrlResource("file:" + mediaService.getFullPath(filename));
 	}
 
 

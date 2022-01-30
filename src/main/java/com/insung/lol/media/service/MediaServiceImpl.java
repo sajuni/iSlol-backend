@@ -43,7 +43,7 @@ public class MediaServiceImpl implements MediaService {
 	}
 
 	public String getFullPath(String filename) {
-		String fullPath = fileDir + getSavePath(filename);
+		String fullPath = fileDir + filename;
 		return fullPath;
 	}
 
@@ -69,7 +69,7 @@ public class MediaServiceImpl implements MediaService {
 			Member member = jwtUtils.getLoginUserEntity();
 			String filename = file.getOriginalFilename();
 			String savePath = getSavePath(filename);
-			String fullPath = getFullPath(filename);
+			String fullPath = getFullPath(savePath);
 			log.info("파일 저장 fullPath = {}", fullPath);
 			file.transferTo(new File(fullPath));
 			Media media = new Media(member, savePath, mediaDTO.getName(), mediaDTO.getDscrp(), mediaDTO.getType(), YNEnum.Y);
