@@ -10,10 +10,10 @@ import java.util.Map;
 
 public interface MediaService {
 	
-	public Map<String, List<MediaDTO>> getMediaList();
+	Map<String, List<MediaDTO>> getMediaList();
 
-	public Media saveMedia(MultipartFile file, MediaDTO mediaDTO) throws IOException;
+	Media saveMedia(MultipartFile file, MediaDTO mediaDTO) throws IOException;
 
-	public Media saveMedia(MediaDTO mediaDTO);
+	Media saveMedia(MediaDTO mediaDTO);
 
 }

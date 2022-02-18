@@ -1,5 +1,6 @@
 package com.insung.lol.media.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.insung.lol.common.dto.YNEnum;
 import com.insung.lol.media.domain.Media;
 import com.insung.lol.member.dto.MemberDTO;
@@ -15,6 +16,7 @@ public class MediaDTO {
 	private String dscrp;
 	private MEDIAEnum type;
 	private YNEnum useYn;
+	@JsonIgnore
 	private String typeValue;
 	
 	public MediaDTO() {};

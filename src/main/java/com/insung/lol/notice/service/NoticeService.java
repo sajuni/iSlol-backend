@@ -10,11 +10,11 @@ import com.insung.lol.notice.dto.NoticeDTO;
 
 public interface NoticeService {
 
-	public Page<NoticeDTO> getNoticeList(Pageable pageable);
+	Page<NoticeDTO> getNoticeList(Pageable pageable);
 
-	public Notice getNoticeDetail(Long id);
+	Notice getNoticeDetail(Long id);
 
-	public Notice save(NoticeDTO noticeDTO);
+	Notice save(NoticeDTO noticeDTO);
 
-	public void delete(Long id);
+	void delete(Long id);
 }

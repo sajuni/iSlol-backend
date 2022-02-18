@@ -25,6 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -81,7 +82,7 @@ public class MemberController extends BaseController {
 	* @throws BizException
 	*/
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpVO signUpReq) throws BizException {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpVO signUpReq, BindingResult bindingResult) throws BizException {
 		if(memberService.existsByMemberEmail(signUpReq.getEmail())) {
 			throw new BizException("signup001", "중복된 이메일 입니다.");
 		}

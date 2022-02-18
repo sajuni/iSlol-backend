@@ -1,8 +1,10 @@
 package com.insung.lol.common;
 
 
+import com.insung.lol.common.exception.BizException;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,10 @@ import com.insung.lol.common.constant.ApiConstant;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +40,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 public class BaseController {
+
+	@ExceptionHandler(BizException.class)
+	public ResponseEntity<String> BizExceptionHand(HttpServletRequest request, HttpServletResponse response, BizException e) {
+		log.error("BizException {}", e);
+		JSONObject responseJson = getResponseJson(e.getCode(), e.getMessage(), new HashMap<>());
+		return new ResponseEntity<String>(responseJson.toString(), HttpStatus.OK);
+	}
+
 
 	/**
 	 * @fileName	: getResponseEntity
@@ -80,7 +93,6 @@ public class BaseController {
 		return responsJson;
 	}
 
-
 	// 벨리데이션 에러 처리
 	protected ResponseEntity<String> getRequestEntityError(BindingResult bindingResult) {
 		List<HashMap<String, String>> collect = bindingResult.getFieldErrors().stream()
@@ -91,4 +103,5 @@ public class BaseController {
 		responseData.put("requestError", collect);
 		return getErrorEntity(responseData);
 	}
+
 }
