@@ -18,10 +18,10 @@ public class MediaDTO {
 	private YNEnum useYn;
 	@JsonIgnore
 	private String typeValue;
-	
+	private String sort;
 	public MediaDTO() {};
 
-	public MediaDTO(MemberDTO member, Long mediaSeq, String mediaUrl, String name, String dscrp, MEDIAEnum type, YNEnum useYn) {
+	public MediaDTO(MemberDTO member, Long mediaSeq, String mediaUrl, String name, String dscrp, MEDIAEnum type, YNEnum useYn, String sort) {
 		this.member = member;
 		this.mediaSeq = mediaSeq;
 		this.mediaUrl = mediaUrl;
@@ -29,12 +29,13 @@ public class MediaDTO {
 		this.type = type;
 		this.dscrp = dscrp;
 		this.useYn = useYn;
+		this.sort = sort;
 	}
 
 	public MediaDTO build(Media v) {
 		MemberDTO memberDTO = new MemberDTO(v.getMember().getMemberSeq(), v.getMember().getMemberName());
 		MediaDTO mediaDTO = new MediaDTO(memberDTO, v.getMediaSeq(), v.getMediaUrl(), v.getName(),
-								v.getDscrp(), v.getType(), v.getUseYn());
+								v.getDscrp(), v.getType(), v.getUseYn(), v.getSort());
 		return mediaDTO;
 	}
 

@@ -2,6 +2,7 @@ package com.insung.lol.notice.service;
 
 import java.util.Optional;
 
+import com.insung.lol.common.annotation.TraceLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,8 +18,9 @@ import com.insung.lol.notice.domain.Notice;
 import com.insung.lol.notice.dto.NoticeDTO;
 import com.insung.lol.notice.repository.NoticeRepository;
 
-@Service
+@TraceLog
 @Slf4j
+@Service
 public class NoticeServiceImpl implements NoticeService {
 
 	@Autowired

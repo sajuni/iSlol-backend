@@ -1,6 +1,7 @@
 package com.insung.lol.media.controller;
 
 import com.insung.lol.common.BaseController;
+import com.insung.lol.common.annotation.TraceLog;
 import com.insung.lol.media.domain.Media;
 import com.insung.lol.media.dto.MEDIAEnum;
 import com.insung.lol.media.dto.MediaDTO;
@@ -21,9 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
+@TraceLog
 @RestController
 @RequestMapping("/api/media")
-@Slf4j
 public class MediaController extends BaseController {
 
 	@Autowired
@@ -32,19 +34,20 @@ public class MediaController extends BaseController {
 
 	@GetMapping()
 	public ResponseEntity<?> getMediaList() {
-		log.info("start getMediaList!!");
 		Map<String, List<MediaDTO>> result = mediaService.getMediaList();
-		
-		log.info("end endMediaList!!");
-		Map<String, Object> responseData = new HashMap<>();
-		responseData.put("mediaList", result);
 		return getResponseEntity(result);
 	}
+
+//	@GetMapping()
+//	public ResponseEntity<?> getRankMediaList() {
+//		Map<String, List<MediaDTO>> result = mediaService.getRankMediaList();
+//
+//		return getResponseEntity(result);
+//	}
 
 	@PostMapping("/save")
 	public ResponseEntity<?> saveMedia(@RequestPart(name = "file", required = false)MultipartFile file,
 									   @RequestPart(value = "mediaDTO") MediaDTO mediaDTO) {
-		log.info("start saveMedia");
 		Map<String, Object> responseData = new HashMap<>();
 
 		// 이넘타입 DTO로 변환하는법을 몰라서 typeValue로 이넘 주입
@@ -58,14 +61,12 @@ public class MediaController extends BaseController {
 		if (mediaDTO.getType() == MEDIAEnum.VIDEO) {
 			Media media = mediaService.saveMedia(mediaDTO);
 			responseData.put("imageSave", media);
-			log.info("end saveMedia");
 			return getSaveEntity(responseData);
 		} else {
 			// 이미지 업로드
 			try {
 				Media media = mediaService.saveMedia(file, mediaDTO);
 				responseData.put("videoSave", media);
-				log.info("end saveMedia");
 				return getSaveEntity(responseData);
 			} catch (IOException e) {
 				responseData.put("saveError", "미디어 업로드에 실패 하였습니다.");

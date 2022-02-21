@@ -47,12 +47,15 @@ public class Media extends BaseTimeEntity {
 	private String dscrp;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "type", length = 1, nullable = false, columnDefinition = "enum('VIDEO', 'IMAGE')")
+	@Column(name = "TYPE", length = 1, nullable = false, columnDefinition = "enum('VIDEO', 'IMAGE')")
 	private MEDIAEnum type;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "USE_YN", length = 1, nullable = true, columnDefinition = "enum('N', 'Y') default 'Y'")
 	private YNEnum useYn;
+
+	@Column(name = "SORT", length = 1, nullable = true)
+	private String sort;
 
 	public Media() {
 	}
@@ -64,5 +67,16 @@ public class Media extends BaseTimeEntity {
 		this.dscrp = dscrp;
 		this.type = type;
 		this.useYn = useYn;
+	}
+
+	public Media(Long mediaSeq, Member member, String mediaUrl, String name, String dscrp, MEDIAEnum type, YNEnum useYn, String sort) {
+		this.mediaSeq = mediaSeq;
+		this.member = member;
+		this.mediaUrl = mediaUrl;
+		this.name = name;
+		this.dscrp = dscrp;
+		this.type = type;
+		this.useYn = useYn;
+		this.sort = sort;
 	}
 }

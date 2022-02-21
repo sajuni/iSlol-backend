@@ -1,6 +1,7 @@
 package com.insung.lol.media.service;
 
 import com.insung.lol.auth.security.jwt.JwtUtils;
+import com.insung.lol.common.annotation.TraceLog;
 import com.insung.lol.common.dto.YNEnum;
 import com.insung.lol.media.domain.Media;
 import com.insung.lol.media.dto.MEDIAEnum;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
+@TraceLog
 @Service
 public class MediaServiceImpl implements MediaService {
 

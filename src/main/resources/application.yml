@@ -18,18 +18,19 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: true
+#        format_sql: false
+
 #  servlet:
 #    multipart:
 #      max-file-size: 10MB
 #      max-request-szie: 20MB
-# logging
+
 logging:
   level:
     root: info
-    org:
-    hibernate:
-    sql: debug
+#    org:
+#    hibernate:
+#    sql: debug
 
 # Token     
 jwt:

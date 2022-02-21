@@ -1,17 +1,13 @@
 package com.insung.lol.notice.controller;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import com.insung.lol.common.exception.BizException;
+import com.insung.lol.common.annotation.TraceLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +17,6 @@ import com.insung.lol.notice.dto.NoticeDTO;
 import com.insung.lol.notice.service.NoticeServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
-
-import javax.validation.Valid;
 
 /**
 * @packageName 	: com.insung.lol.notice.controller
@@ -35,6 +29,7 @@ import javax.validation.Valid;
 * -----------------------------------------------------------
 * 2021.11.21 	Seung Hyo 	최초 생성
 */
+@TraceLog
 @RestController
 @RequestMapping("/api/notice")
 @Slf4j
@@ -45,13 +40,10 @@ public class NoticeController extends BaseController {
 
 	@PostMapping()
 	public ResponseEntity<?> getNoticeList(@RequestBody Map<String, Object> reqParam) {
-		log.info("start getNoticeList");
-
 		int pageNum = (int)(reqParam.get("pageNum") == null ? 0 : reqParam.get("pageNum"));
 		int itemPerPage = (int)(reqParam.get("itemPerPage") == null ? 1 : reqParam.get("itemPerPage"));
 
 		Page<NoticeDTO> noticeList = noticeService.getNoticeList(PageRequest.of(pageNum, itemPerPage));
-		log.info("end getNoticeList");
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("noticeList", noticeList);
 		return getResponseEntity(responseData);
