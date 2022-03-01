@@ -10,12 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -49,7 +47,6 @@ public class MediaController extends BaseController {
 	public ResponseEntity<?> saveMedia(@RequestPart(name = "file", required = false)MultipartFile file,
 									   @RequestPart(value = "mediaDTO") MediaDTO mediaDTO) {
 		Map<String, Object> responseData = new HashMap<>();
-
 		// 이넘타입 DTO로 변환하는법을 몰라서 typeValue로 이넘 주입
 		if (mediaDTO.getTypeValue().equals("IMAGE")) {
 			mediaDTO.setType(MEDIAEnum.IMAGE);
