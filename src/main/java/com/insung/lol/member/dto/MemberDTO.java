@@ -20,9 +20,10 @@ public class MemberDTO {
 	private String memberEamil;
 	private String memberNick;
 	
-	public MemberDTO(Long memberSeq, String memberName) {
+	public MemberDTO(Long memberSeq, String memberName, String  memberNick) {
 		this.memberSeq = memberSeq;
 		this.memberName = memberName;
+		this.memberNick = memberNick;
 	}
 
 }

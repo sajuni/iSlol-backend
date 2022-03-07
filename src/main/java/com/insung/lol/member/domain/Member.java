@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.insung.lol.common.domain.BaseTimeEntity;
 import com.insung.lol.member.projection.MemberDTOP;
 import com.insung.lol.notice.domain.Notice;
 import com.insung.lol.media.domain.Media;
@@ -29,7 +30,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "TB_MEMBER", uniqueConstraints = { @UniqueConstraint(columnNames = "MEMBER_EMAIL") })
-public class Member implements Cloneable {
+public class Member extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,11 +71,6 @@ public class Member implements Cloneable {
 		this.memberName 		= memberName;
 		this.memberAddr			= memberAddr;
 		this.memberNick			= memberNick;
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
 	}
 
 	public Member(MemberDTOP mem) {

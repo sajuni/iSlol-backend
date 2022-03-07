@@ -33,7 +33,7 @@ public class Notice extends BaseTimeEntity {
 	@Column(name = "TITLE", length = 100, nullable = false)
 	private String title;
 
-	@Column(name = "CONTENT", length = 500, nullable = false)
+	@Column(name = "CONTENT", nullable = false, columnDefinition = "LONGTEXT")
 	private String content;
 
 	@Column(name = "VIEW_CNT", length = 10, nullable = true, columnDefinition = "integer default 0")

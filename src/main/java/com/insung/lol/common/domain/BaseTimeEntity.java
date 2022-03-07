@@ -2,6 +2,7 @@ package com.insung.lol.common.domain;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 
@@ -19,6 +20,7 @@ import lombok.Getter;
 public class BaseTimeEntity {
 
 	@CreatedDate
+	@Column(updatable = false)
 	@JsonFormat(pattern = "yyyy-MM-dd kk:mm")
 	private LocalDateTime createdDate;
 

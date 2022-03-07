@@ -33,7 +33,7 @@ public class MediaDTO {
 	}
 
 	public MediaDTO build(Media v) {
-		MemberDTO memberDTO = new MemberDTO(v.getMember().getMemberSeq(), v.getMember().getMemberName());
+		MemberDTO memberDTO = new MemberDTO(v.getMember().getMemberSeq(), v.getMember().getMemberName(), v.getMember().getMemberNick());
 		MediaDTO mediaDTO = new MediaDTO(memberDTO, v.getMediaSeq(), v.getMediaUrl(), v.getName(),
 								v.getDscrp(), v.getType(), v.getUseYn(), v.getSort());
 		return mediaDTO;

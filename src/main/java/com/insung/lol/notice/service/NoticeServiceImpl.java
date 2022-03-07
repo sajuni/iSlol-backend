@@ -42,7 +42,7 @@ public class NoticeServiceImpl implements NoticeService {
 		Page<Notice> result = noticeRepository.findAllByUseYn(YNEnum.Y, pageable);
 		Page<NoticeDTO> notice = result.map(v ->
 									new NoticeDTO(v.getNoticeSeq(), v.getTitle(), v.getContent(), v.getCreatedDate(), v.getModifiedDate(), v.getViewCnt(), v.getUseYn(),
-													new MemberDTO(v.getMember().getMemberSeq(), v.getMember().getMemberName())));
+													new MemberDTO(v.getMember().getMemberSeq(), v.getMember().getMemberName(), v.getMember().getMemberNick())));
 		return notice;
 	}
 
