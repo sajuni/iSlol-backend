@@ -13,11 +13,11 @@ spring:
     username: root
     password: 1013
   jpa:
-    hibernate:
+#    hibernate:
       #ddl-auto: create
-      ddl-auto: update
+#      ddl-auto: update
     properties:
-      hibernate:
+      hibernate.hbm2ddl.auto: update
 #        format_sql: false
 
 #  servlet:
