@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.insung.lol.common.domain.BaseTimeEntity;
 import com.insung.lol.common.dto.YNEnum;
 import com.insung.lol.media.dto.MEDIAEnum;
@@ -29,54 +30,52 @@ public class Media extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "MEDIA_SEQ")
+	@Column(name = "media_seq")
 	private Long mediaSeq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonBackReference
-	@JoinColumn(name = "MEMBER_SEQ", nullable = false)
+	@JoinColumn(name = "member_seq", nullable = false)
 	private Member member;
 
-	@Column(name = "URL", length = 200, nullable = false)
-	private String mediaUrl;
+	@Column(name = "url", length = 200, nullable = false)
+	private String url;
 
-	@Column(name = "NAME", length = 10, nullable = false)
+	@Column(name = "name", length = 10, nullable = false)
 	private String name;
 
-	@Column(name = "DSCRP", length = 50, nullable = true)
+	@Column(name = "dscrp", length = 50, nullable = true)
 	private String dscrp;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TYPE", length = 1, nullable = false, columnDefinition = "enum('VIDEO', 'IMAGE')")
+	@Column(name = "type", length = 1, nullable = false, columnDefinition = "enum('VIDEO', 'IMAGE')")
 	private MEDIAEnum type;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "USE_YN", length = 1, nullable = true, columnDefinition = "enum('N', 'Y') default 'Y'")
-	private YNEnum useYn;
 
 	@Column(name = "SORT", length = 1, nullable = true)
 	private String sort;
 
+	@Column(name = "is_deleted", nullable = true, insertable = false, updatable = false)
+	@JsonIgnore
+	private Boolean isDeleted;
+
 	public Media() {
 	}
 
-	public Media(Member member, String mediaUrl, String name, String dscrp, MEDIAEnum type, YNEnum useYn) {
+	public Media(Member member, String url, String name, String dscrp, MEDIAEnum type) {
 		this.member = member;
-		this.mediaUrl = mediaUrl;
+		this.url = url;
 		this.name = name;
 		this.dscrp = dscrp;
 		this.type = type;
-		this.useYn = useYn;
 	}
 
-	public Media(Long mediaSeq, Member member, String mediaUrl, String name, String dscrp, MEDIAEnum type, YNEnum useYn, String sort) {
+	public Media(Long mediaSeq, Member member, String url, String name, String dscrp, MEDIAEnum type, String sort) {
 		this.mediaSeq = mediaSeq;
 		this.member = member;
-		this.mediaUrl = mediaUrl;
+		this.url = url;
 		this.name = name;
 		this.dscrp = dscrp;
 		this.type = type;
-		this.useYn = useYn;
 		this.sort = sort;
 	}
 }

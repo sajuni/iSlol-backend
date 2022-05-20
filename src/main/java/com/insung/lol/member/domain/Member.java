@@ -1,31 +1,18 @@
 package com.insung.lol.member.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.insung.lol.common.domain.BaseTimeEntity;
+import com.insung.lol.media.domain.Media;
+import com.insung.lol.member.projection.MemberPrj;
+import com.insung.lol.notice.domain.Notice;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
-import com.insung.lol.common.domain.BaseTimeEntity;
-import com.insung.lol.member.projection.MemberDTOP;
-import com.insung.lol.notice.domain.Notice;
-import com.insung.lol.media.domain.Media;
-
-import lombok.Data;
 
 @Data
 @Entity
@@ -34,26 +21,33 @@ public class Member extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "MEMBER_SEQ")
+	@Column(name = "member_seq")
 	private Long memberSeq;
 
-	@Column(name = "MEMBER_EMAIL", length = 50, nullable = false)
-	private String memberEmail;
+	@Column(name = "member_id", length = 30, nullable = false)
+	private String memberId;
 
-	@Column(name = "MEMBER_PWD", length = 100, nullable = false)
+	@Column(name = "member_pwd", length = 100, nullable = false)
 	private String memberPwd;
 
-	@Column(name = "MEMBER_Name", length = 10, nullable = false)
+	@Column(name = "member_name", length = 30, nullable = false)
 	private String memberName;
 
-	@Column(name = "MEMBER_ADDR", length = 255, nullable = true)
-	private String memberAddr;
+	@Column(name = "member_email", length = 100, nullable = false)
+	private String memberEmail;
 
-	@Column(name = "MEMBER_NICK", length = 10, nullable = true)
+	@Column(name = "member_nick", length = 10, nullable = false)
 	private String memberNick;
 
+	@Column(name = "member_tel", length = 11, nullable = true)
+	private String memberTel;
+
+	@Column(name = "is_deleted", nullable = true, insertable = false, updatable = false)
+	@JsonIgnore
+	private Boolean isDeleted;
+
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "TB_MEM_ROLES", joinColumns = @JoinColumn(name = "MEMBER_SEQ"), inverseJoinColumns = @JoinColumn(name = "ROLE_SEQ"))
+	@JoinTable(name = "TB_MEM_ROLES", joinColumns = @JoinColumn(name = "member_seq"), inverseJoinColumns = @JoinColumn(name = "role_seq"))
 	private Set<MemberRoles> roles = new HashSet<>();
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -64,23 +58,20 @@ public class Member extends BaseTimeEntity {
 
 	public Member() {}
 
-	public Member(String memberEmail, String memberPwd,
-			String memberName, String memberAddr, String memberNick) {
-		this.memberEmail		= memberEmail;
+	public Member(String memberId, String memberPwd,
+			String memberName, String memberNick) {
+		this.memberId			= memberId;
 		this.memberPwd 			= memberPwd;
 		this.memberName 		= memberName;
-		this.memberAddr			= memberAddr;
 		this.memberNick			= memberNick;
 	}
 
-	public Member(MemberDTOP mem) {
+	public Member(MemberPrj mem) {
 		this.memberSeq			= mem.getMemberSeq();
-		this.memberEmail		= mem.getMemberEmail();
+		this.memberId			= mem.getMemberId();
 		this.memberPwd 			= mem.getMemberPwd();
 		this.memberName 		= mem.getMemberName();
-		this.memberAddr			= mem.getMemberAddr();
 		this.memberNick			= mem.getMemberNick();
 	}
-
 
 }

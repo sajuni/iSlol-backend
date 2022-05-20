@@ -86,8 +86,8 @@ public class MemberController extends BaseController {
 		if(memberService.existsByMemberEmail(signUpReq.getEmail())) {
 			throw new BizException("signup001", "중복된 이메일 입니다.");
 		}
-		Member member = new Member(signUpReq.getEmail(), encoder.encode(signUpReq.getPwd()),
-				signUpReq.getName(), signUpReq.getAddr(), signUpReq.getNick());
+		Member member = new Member(signUpReq.getId(), encoder.encode(signUpReq.getPwd()),
+				signUpReq.getName(), signUpReq.getNick());
 		Set<String> strRoles = signUpReq.getRole();
 		Set<MemberRoles> memberRoles = new HashSet<>();
 

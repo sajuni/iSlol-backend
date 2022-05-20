@@ -74,7 +74,7 @@ public class MediaServiceImpl implements MediaService {
 			String fullPath = getFullPath(savePath);
 			log.info("파일 저장 fullPath = {}", fullPath);
 			file.transferTo(new File(fullPath));
-			Media media = new Media(member, savePath, mediaDTO.getName(), mediaDTO.getDscrp(), mediaDTO.getType(), YNEnum.Y);
+			Media media = new Media(member, savePath, mediaDTO.getName(), mediaDTO.getDscrp(), mediaDTO.getType());
 			return mediaRepository.save(media);
 		}
 		return null;
@@ -83,7 +83,7 @@ public class MediaServiceImpl implements MediaService {
 	@Override
 	public Media saveMedia(MediaDTO mediaDTO) {
 		Member member = jwtUtils.getLoginUserEntity();
-		Media media = new Media(member, mediaDTO.getMediaUrl(), mediaDTO.getName(), mediaDTO.getDscrp(), mediaDTO.getType(), YNEnum.Y);
+		Media media = new Media(member, mediaDTO.getMediaUrl(), mediaDTO.getName(), mediaDTO.getDscrp(), mediaDTO.getType());
 		return mediaRepository.save(media);
 	}
 }
