@@ -16,5 +16,5 @@ import lombok.Data;
 @Data
 public class JwtTokenReq {
 	private String token;
-	private String refreshtoken;
+	private String refreshToken;
 }

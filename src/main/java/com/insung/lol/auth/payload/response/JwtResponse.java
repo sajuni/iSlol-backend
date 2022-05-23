@@ -2,6 +2,7 @@ package com.insung.lol.auth.payload.response;
 
 import java.util.List;
 
+import com.insung.lol.auth.domain.UserDetail;
 import lombok.Data;
 
 /**
@@ -19,27 +20,25 @@ import lombok.Data;
 public class JwtResponse {
 
 	private String type = "Bearer";
-	private Long id;
-	private String email;
-	private String userNm;
-	private String addr;
-	private String nick;
+	private Long memberSeq;
+	private String memberId;
+	private String memberName;
+	private String memberEmail;
+	private String memberNick;
+	private String memberTel;
 	private List<String> roles;
 	private String token;
 	private String refreshToken;
 
-
-	public JwtResponse(Long id, String email, String userNm, String addr, String nick, List<String> roles, String token,
-			String refreshToken) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.userNm = userNm;
-		this.addr = addr;
-		this.nick = nick;
+	public JwtResponse(UserDetail user, List<String> roles, String token, String refreshToken) {
+		this.memberSeq = user.getMemberSeq();
+		this.memberId = user.getMemberId();
+		this.memberName = user.getMemberName();
+		this.memberEmail = user.getMemberEmail();
+		this.memberNick = user.getMemberNick();
+		this.memberTel = user.getMemberTel();
 		this.roles = roles;
 		this.token = token;
 		this.refreshToken = refreshToken;
 	}
-
 }

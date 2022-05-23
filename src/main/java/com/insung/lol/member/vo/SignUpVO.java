@@ -2,12 +2,15 @@ package com.insung.lol.member.vo;
 
 import java.util.Set;
 
+import javax.persistence.PrePersist;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.insung.lol.member.domain.MemberERole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
 * @packageName 		: com.insung.lol.member.vo
@@ -22,13 +25,23 @@ import lombok.Data;
 */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SignUpVO {
 
-	private String email;
-	private String name;
-	private String pwd;
-	private String addr;
-	private String nick;
+	private String memberId;
+	private String memberPw;
+	private String memberName;
+	private String memberEmail;
+	private String memberNick;
+	private String memberTel;
 	private Set<String> role;
 
+	public SignUpVO(String memberId, String memberPw, String memberName, String memberEmail, String memberNick, String memberTel) {
+		this.memberId = memberId;
+		this.memberPw = memberPw;
+		this.memberName = memberName;
+		this.memberEmail = memberEmail;
+		this.memberNick = memberNick;
+		this.memberTel = memberTel;
+	}
 }

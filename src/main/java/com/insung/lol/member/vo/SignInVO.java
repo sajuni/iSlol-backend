@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class SignInVO {
 	@NotBlank
-	private String memberEmail;
+	private String memberId;
 	@NotBlank
-	private String memberPwd;
+	private String memberPw;
 }

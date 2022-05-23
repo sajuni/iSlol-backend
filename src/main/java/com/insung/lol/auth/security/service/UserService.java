@@ -13,9 +13,9 @@ public class UserService {
 	@Autowired
 	MemberRepository memberRepository;
 
-	public Member getUserInfo(String userId) throws UsernameNotFoundException {
-		Member member = memberRepository.findByMemberEmail(userId)
-				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with userId: " + userId));
+	public Member getUserInfo(String memberId) throws UsernameNotFoundException {
+		Member member = memberRepository.findByMemberId(memberId)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with userId: " + memberId));
 
 		return member;
 	}

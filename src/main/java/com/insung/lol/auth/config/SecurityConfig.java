@@ -74,8 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/api/auth/**").permitAll()
-				.antMatchers("/api/user/**").permitAll() // allow every URI, that begins with '/api/user/'
+				.antMatchers("/api/**").permitAll()
+//				.antMatchers("/api/user/**").permitAll() // allow every URI, that begins with '/api/user/'
 				.antMatchers("/**/**.jpg").permitAll()
 				.anyRequest().authenticated();
 

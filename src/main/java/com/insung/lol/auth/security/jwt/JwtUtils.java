@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import com.insung.lol.auth.security.service.UserDetailsImpl;
+import com.insung.lol.auth.domain.UserDetail;
 import com.insung.lol.auth.security.service.UserService;
 import com.insung.lol.member.domain.Member;
 
@@ -48,7 +48,7 @@ public class JwtUtils {
 	 */
 	public String generateJwtToken(Authentication authentication) {
 
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+		UserDetail userPrincipal = (UserDetail) authentication.getPrincipal();
 
 		return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))

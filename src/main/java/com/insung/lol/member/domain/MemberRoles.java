@@ -18,11 +18,11 @@ public class MemberRoles {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ROLE_SEQ")
+	@Column(name = "role_seq")
 	private Long roleSeq;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "ROLE_NAME", nullable = false, columnDefinition = "enum('ROLE_USER', 'ROLE_ADMIN') default 'ROLE_USER'")
+	@Column(name = "role_name", nullable = false, columnDefinition = "enum('ROLE_USER', 'ROLE_ADMIN')")
 	private MemberERole roleName;
 
 	public MemberRoles() {
