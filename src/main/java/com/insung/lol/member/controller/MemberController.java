@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value ="/api")
+@RequestMapping(value ="/api/auth")
 public class MemberController extends BaseController {
 
     private final MemberService memberService;
