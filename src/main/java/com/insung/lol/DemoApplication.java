@@ -1,6 +1,5 @@
 package com.insung.lol;
 
-import com.insung.lol.common.aop.LogTraceAspect;
 import com.insung.lol.common.config.AopConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class MemberController extends BaseController {
     private final JwtUtils jwtUtils;
 
     @PostMapping(value = "/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpVO signUpVO) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpVO signUpVO) {
         if (memberService.existsByMemberId(signUpVO.getMemberId())) {
             new BizException("signupError", "중복된 이메일 입니다.");
         }

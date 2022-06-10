@@ -11,13 +11,14 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mariadb://127.0.0.1:3306/db_insung_lol?useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
-    password:
+    password: 1013
   jpa:
-#    hibernate:
-      #ddl-auto: create
-#      ddl-auto: update
-    properties:
-      hibernate.hbm2ddl.auto: update
+    generate-ddl: true
+    hibernate:
+#      ddl-auto: create
+      ddl-auto: update
+#    properties:
+#      hibernate.hbm2ddl.auto: create
 #        format_sql: false
 
 #  servlet:
