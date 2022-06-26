@@ -24,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-		 Member user = memberService.findMemberById(userId)
+		 Member user = memberService.findById(userId)
 					.orElseThrow(() -> new UsernameNotFoundException("User Not Found with userId: " + userId));
 
 		 RequestContextHolder.getRequestAttributes().setAttribute("loginUserInfo", user, RequestAttributes.SCOPE_SESSION);

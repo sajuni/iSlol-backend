@@ -23,21 +23,21 @@ import java.util.Set;
 @NoArgsConstructor
 public class SignUpVO {
 
-	private String memberId;
-	private String memberPw;
-	private String memberName;
-	private String memberEmail;
+	private String id;
+	private String pw;
+	private String name;
+	private String email;
 	@NotBlank
-	private String memberNick;
-	private String memberTel;
+	private String nick;
+	private String mobileNum;
 	private Set<String> role;
 
-	public SignUpVO(String memberId, String memberPw, String memberName, String memberEmail, String memberNick, String memberTel) {
-		this.memberId = memberId;
-		this.memberPw = memberPw;
-		this.memberName = memberName;
-		this.memberEmail = memberEmail;
-		this.memberNick = memberNick;
-		this.memberTel = memberTel;
+	public SignUpVO(String id, String pw, String name, String email, String nick, String mobileNum) {
+		this.id = id;
+		this.pw = pw;
+		this.name = name;
+		this.email = email;
+		this.nick = nick;
+		this.mobileNum = mobileNum;
 	}
 }

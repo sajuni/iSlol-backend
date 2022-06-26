@@ -14,7 +14,7 @@ public class UserService {
 	MemberRepository memberRepository;
 
 	public Member getUserInfo(String memberId) throws UsernameNotFoundException {
-		Member member = memberRepository.findByMemberId(memberId)
+		Member member = memberRepository.findById(memberId)
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with userId: " + memberId));
 
 		return member;

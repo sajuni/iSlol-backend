@@ -20,23 +20,23 @@ import lombok.Data;
 public class JwtResponse {
 
 	private String type = "Bearer";
-	private Long memberSeq;
-	private String memberId;
-	private String memberName;
-	private String memberEmail;
-	private String memberNick;
-	private String memberTel;
+	private Long seq;
+	private String id;
+	private String name;
+	private String email;
+	private String nick;
+	private String mobileNum;
 	private List<String> roles;
 	private String token;
 	private String refreshToken;
 
 	public JwtResponse(UserDetail user, List<String> roles, String token, String refreshToken) {
-		this.memberSeq = user.getMemberSeq();
-		this.memberId = user.getMemberId();
-		this.memberName = user.getMemberName();
-		this.memberEmail = user.getMemberEmail();
-		this.memberNick = user.getMemberNick();
-		this.memberTel = user.getMemberTel();
+		this.seq = user.getSeq();
+		this.id = user.getId();
+		this.name = user.getName();
+		this.email = user.getEmail();
+		this.nick = user.getNick();
+		this.mobileNum = user.getMobileNum();
 		this.roles = roles;
 		this.token = token;
 		this.refreshToken = refreshToken;

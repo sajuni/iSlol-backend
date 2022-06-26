@@ -17,16 +17,16 @@ public class MemberService {
  	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	public Optional<Member> findMemberById(String memberId) {
-		return memberRepository.findByMemberId(memberId);
+	public Optional<Member> findById(String id) {
+		return memberRepository.findById(id);
 	}
 
-	public boolean existsByMemberId(String memberId) {
-		return memberRepository.existsByMemberId(memberId);
+	public boolean existsByMemberId(String id) {
+		return memberRepository.existsById(id);
 	}
 
 	public Member signUpMember(Member mem) {
-		mem.setMemberPw(passwordEncoder.encode(mem.getMemberPw()));
+		mem.setPw(passwordEncoder.encode(mem.getPw()));
 		return memberRepository.save(mem);
 	}
 
