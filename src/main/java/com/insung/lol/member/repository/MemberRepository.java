@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findById(String id);
-
     boolean existsById(String id);
+    Member findBySeq(Long seq);
 }

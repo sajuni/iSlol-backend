@@ -35,10 +35,10 @@ public class MemberController extends BaseController {
     private final JwtUtils jwtUtils;
 
     @PostMapping(value = "/signup")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpVO signUpVO) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpVO signUpVO) throws BizException {
         log.info("테스트 {}", signUpVO);
         if (memberService.existsByMemberId(signUpVO.getId())) {
-            new BizException("signupError", "중복된 이메일 입니다.");
+            throw new BizException("signupError", "중복된 이메일 입니다.");
         }
 
         Member mem = new Member(signUpVO);
@@ -61,12 +61,10 @@ public class MemberController extends BaseController {
         return getResponseEntity(new JwtResponse(user, roles, token, refreshToken));
     }
 
-    @PutMapping(value = "/update/{id}")
-    public ResponseEntity update(@RequestBody UpdateVO updateVO, @PathVariable Long id) {
-
-
-
-        return null;
+    @PutMapping(value = "/update/{seq}")
+    public ResponseEntity update(@RequestBody UpdateVO updateVO, @PathVariable Long seq) throws BizException {
+        memberService.updateMember(seq, updateVO);
+        return getResponseEntity(new HashMap<String, String >(){{put("tt","gg");}});
 
     }
 

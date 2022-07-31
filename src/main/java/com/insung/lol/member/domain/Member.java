@@ -4,6 +4,7 @@ package com.insung.lol.member.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.insung.lol.common.domain.BaseTimeEntity;
 import com.insung.lol.member.vo.SignUpVO;
+import com.insung.lol.member.vo.UpdateVO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,10 +38,10 @@ public class Member extends BaseTimeEntity {
 	@Column(name = "nick", length = 10, nullable = false)
 	private String nick;
 
-	@Column(name = "tel", length = 11, nullable = true)
+	@Column(name = "tel", length = 11)
 	private String mobileNum;
 
-	@Column(name = "is_deleted", nullable = true, insertable = false, updatable = false, columnDefinition = "boolean default false")
+	@Column(name = "is_deleted", insertable = false, updatable = false, columnDefinition = "boolean default false")
 	@JsonIgnore
 	private Boolean isDeleted;
 
@@ -65,6 +66,13 @@ public class Member extends BaseTimeEntity {
 		this.email = signUpVO.getEmail();
 		this.nick = signUpVO.getNick();
 		this.mobileNum = signUpVO.getMobileNum();
+	}
+
+	public void updateMember(UpdateVO updateVO) {
+		this.email = updateVO.getEmail();
+		this.nick = updateVO.getNick();
+		this.mobileNum = updateVO.getMobileNum();
+		this.pw = updateVO.getChangePw();
 	}
 
 }

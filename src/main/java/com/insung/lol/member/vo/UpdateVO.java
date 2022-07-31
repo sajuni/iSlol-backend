@@ -9,6 +9,7 @@ public class UpdateVO {
 
     private String email;
     private String pw;
+    private String changePw;
     private String nick;
     private String mobileNum;
     private String role;

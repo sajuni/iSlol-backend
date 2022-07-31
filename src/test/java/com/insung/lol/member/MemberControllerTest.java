@@ -24,8 +24,8 @@ public class MemberControllerTest {
     public void signUpTest() {
         SignUpVO signUpVO = new SignUpVO("test", "1", "name", "em", "nick", "tel");
         Member member = new Member(signUpVO);
-        Member result = memberService.signUpMember(member);
-        System.out.println("result = " + result);
+        //Member result = memberService.save(member);
+        //System.out.println("result = " + result);
     }
 
 }
