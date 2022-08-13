@@ -70,6 +70,10 @@ public class BaseController {
 		return new ResponseEntity<>(json.toString(), HttpStatus.CREATED);
 	}
 
+	protected ResponseEntity<String> getUpdateEntity(Object bodyObject) {
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 	/**
 	 * @fileName	: getResponseJson
 	 * @author		: "sajuni11"
