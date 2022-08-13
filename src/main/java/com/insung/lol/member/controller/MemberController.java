@@ -49,7 +49,6 @@ public class MemberController extends BaseController {
 
     @PostMapping(value = "/signin")
     public ResponseEntity<?> signIn(@RequestBody SignInVO signInVO) {
-        log.info("테스트 {}", signInVO);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInVO.getId(), signInVO.getPw())); // 아이디 패스워드 검증
         SecurityContextHolder.getContext().setAuthentication(authentication);  // 인증정보 저장
@@ -64,7 +63,6 @@ public class MemberController extends BaseController {
 
     @PutMapping(value = "/update/{seq}")
     public ResponseEntity update(@RequestBody UpdateVO updateVO, @PathVariable Long seq) throws BizException {
-        log.debug("회원정보 업데이트 {}", seq);
         memberService.updateMember(seq, updateVO);
         return getResponseEntity(new HashMap<String, String >(){{put("tt","gg");}});
 

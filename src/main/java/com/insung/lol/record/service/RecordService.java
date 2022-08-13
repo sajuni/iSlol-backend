@@ -1,10 +1,17 @@
 package com.insung.lol.record.service;
 
+import com.insung.lol.record.dto.RecordDTO;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -12,16 +19,27 @@ public class RecordService {
 
     private ChromeDriver driver;
 
-    public void getRecord(String id){
+    public List<WebElement> getRecord(String id) throws InterruptedException {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-popup-blocking");       //팝업안띄움
+        options.addArguments("headless");                       //브라우저 안띄움
+        options.addArguments("--disable-gpu");			//gpu 비활성화
+        options.addArguments("--blink-settings=imagesEnabled=false"); //이미지 다운 안받음
+        driver = new ChromeDriver(options);
         try {
-            log.debug("테스트중: {}", id);
             driver.get("https://www.op.gg/");
-            driver.findElement(By.xpath("//*[@id=\"searchHome\"]")).sendKeys(id);
-            //WebElement e11dnomr0 = driver.findElementByClassName("e11dnomr0");
-            //System.out.println("테스트 성공1 = " + e11dnomr0);
-            System.out.println("테스트 성공 = " + driver.getCurrentUrl());
+
+            driver.findElement(By.cssSelector("#searchHome")).sendKeys(id);
+            List<WebElement> elements = driver.findElements(By.cssSelector(".e11dnomr0 button"));
+            WebElement searchBtn = (WebElement) elements.stream().filter(v -> v.getText().equals(".GG")).toArray()[0];
+            searchBtn.click();
+            Thread.sleep(500);
+            List<WebElement> recordList = driver.findElements(By.cssSelector(".css-164r41r.e1r5v5160"));
+            for (WebElement webElement : recordList) {
+                System.out.println(webElement.getText()) ;
+            }
+            return recordList;
         } finally {
             driver.quit();
         }
