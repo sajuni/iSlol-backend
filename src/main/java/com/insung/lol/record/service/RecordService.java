@@ -3,7 +3,9 @@ package com.insung.lol.record.service;
 import com.insung.lol.record.domain.Game;
 import com.insung.lol.record.domain.Info;
 import com.insung.lol.record.domain.Participant;
+import com.insung.lol.record.dto.RecordHeaderDTO;
 import com.insung.lol.record.dto.RecordListDTO;
+import com.insung.lol.record.dto.WinLoseLowDTO;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -39,27 +41,42 @@ public class RecordService {
             searchBtn.click();
 
             // 검색 결과 뜰 때 까지 잠시 대기
-            Thread.sleep(800);
+            Thread.sleep(1000);
 
             // 전적 헤더
-            List<WebElement> recordHeader = driver.findElements(By.cssSelector(".ehasqiv3"));
+            WebElement recordHeader = driver.findElement(By.cssSelector(".ehasqiv3"));
             // 전적 리스트
-            List<WebElement> recordList = driver.findElements(By.cssSelector(".css-1qq23jn.e1iiyghw3"));
+            List<WebElement> recordList = driver.findElements(By.cssSelector(".e1iiyghw3"));
 
             // 전적 헤더 파싱
             recordHeaderParsing(recordHeader);
             // 전적 리스트 파싱
             List<RecordListDTO> result = recordListParsing(recordList);
             log.debug("테스트 {}", result);
-            return recordList;
+            //return recordList;
+            return null;
         } finally {
             driver.quit();
         }
     }
 
-    private void recordHeaderParsing(List<WebElement> recordHeader) {
-
-
+    private void recordHeaderParsing(WebElement recordHeader) {
+        RecordHeaderDTO recordHeaderDTO = new RecordHeaderDTO();
+        recordHeaderDTO.setWinLose(recordHeader.findElement(By.cssSelector(".win-lose")).getText());
+        recordHeaderDTO.setWinLosePercent(recordHeader.findElement(By.cssSelector(".kda .text")).getText());
+        recordHeaderDTO.setKda(recordHeader.findElement(By.cssSelector(".k-d-a")).getText());
+        recordHeaderDTO.setRatio(recordHeader.findElement(By.cssSelector(".ratio")).getText());
+        recordHeaderDTO.setKillParticipantion(recordHeader.findElement(By.cssSelector(".kill-participantion")).getText());
+        recordHeaderDTO.setTitle(recordHeader.findElement(By.cssSelector(".title")).getText());
+        recordHeader.findElements(By.cssSelector(".champions li")).stream()
+                .forEach(v -> {
+                    WinLoseLowDTO winLoseLowDTO = new WinLoseLowDTO();
+                    winLoseLowDTO.setImg(v.findElement(By.cssSelector("img")).getAttribute("src"));
+                    winLoseLowDTO.setWinLose(v.findElement(By.cssSelector(".win-lose")).getText());
+                    winLoseLowDTO.setGrade(v.findElement(By.cssSelector(".ehasqiv1")).getText());
+                    recordHeaderDTO.setWinLoseRow(winLoseLowDTO);
+                });
+        System.out.println("왜안해 :" + recordHeaderDTO);
     }
 
     private List<RecordListDTO> recordListParsing(List<WebElement> recordList) {
@@ -71,7 +88,7 @@ public class RecordService {
             Participant participant = new Participant();
             game.setRecordData(webElement);
             webElement.findElements(By.cssSelector(".items li img")).stream().forEach(v ->
-                    game.setItems(v.getAttribute("src")));
+                    game.setItem(v.getAttribute("src")));
 
             info.setChampionLevel(webElement.findElement(By.cssSelector(".champion-level")).getText());
             info.setChampionImg(webElement.findElement(By.cssSelector(".icon a img")).getAttribute("src"));

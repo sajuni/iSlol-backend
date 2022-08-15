@@ -15,7 +15,7 @@ public class Game {
     private String timeStamp;
     private String result;
     private String length;
-    private List<String> items = new ArrayList<>();
+    private List<String> item = new ArrayList<>();
 
     public void setRecordData(WebElement data) {
         type = data.findElement(By.cssSelector(".type")).getText();
@@ -24,7 +24,7 @@ public class Game {
         length = data.findElement(By.cssSelector(".length")).getText();
     }
 
-    public void setItems(String item) {
-        items.add(item);
+    public void setItem(String item) {
+        this.item.add(item);
     }
 }
