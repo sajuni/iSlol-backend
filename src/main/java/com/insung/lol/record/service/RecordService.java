@@ -14,7 +14,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -46,13 +48,20 @@ public class RecordService {
             // 전적 헤더
             WebElement recordHeader = driver.findElement(By.cssSelector(".ehasqiv3"));
             // 전적 리스트
-            List<WebElement> recordList = driver.findElements(By.cssSelector(".e1iiyghw3"));
+            //List<WebElement> recordList = driver.findElements(By.cssSelector(".e1iiyghw3"));
 
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+            String format = sdf.format(date);
+            System.out.println("시작: " + format);
             // 전적 헤더 파싱
             recordHeaderParsing(recordHeader);
+            Date date2 = new Date();
+            String format1 = sdf.format(date2);
+            System.out.println("시작: " + format1);
             // 전적 리스트 파싱
-            List<RecordListDTO> result = recordListParsing(recordList);
-            log.debug("테스트 {}", result);
+            //List<RecordListDTO> result = recordListParsing/(recordList);
+            //log.debug("테스트 {}", result);
             //return recordList;
             return null;
         } finally {
