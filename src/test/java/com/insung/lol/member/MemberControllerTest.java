@@ -20,12 +20,12 @@ public class MemberControllerTest {
     @Test
     @DisplayName(value = "회원가입테스트")
     @Transactional
-    @Rollback(value = false)
+    @Rollback(value = true)
     public void signUpTest() {
-        SignUpVO signUpVO = new SignUpVO("test", "1", "name", "em", "nick", "tel");
+        SignUpVO signUpVO = new SignUpVO("test2", "1", "name", "em", "nick", "tel");
         Member member = new Member(signUpVO);
-        //Member result = memberService.save(member);
-        //System.out.println("result = " + result);
+        Member result = memberService.signUpMember(member);
+        System.out.println("result = " + result);
     }
 
 }

@@ -3,7 +3,6 @@ package com.insung.lol.record.dto;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 @Data
 public class RecordHeaderDTO {

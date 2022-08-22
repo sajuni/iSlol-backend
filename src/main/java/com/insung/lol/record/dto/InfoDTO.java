@@ -1,4 +1,4 @@
-package com.insung.lol.record.domain;
+package com.insung.lol.record.dto;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Info {
+public class InfoDTO {
     private String championLevel;
     private String championImg;
     private List<String> championSpell = new ArrayList<>();
@@ -24,5 +24,4 @@ public class Info {
     public void setChampionKDA(String kda) {
         championKDA.add(kda);
     }
-
 }

@@ -1,11 +1,6 @@
 package com.insung.lol.record.service;
 
-import com.insung.lol.record.domain.Game;
-import com.insung.lol.record.domain.Info;
-import com.insung.lol.record.domain.Participant;
-import com.insung.lol.record.dto.RecordHeaderDTO;
-import com.insung.lol.record.dto.RecordListDTO;
-import com.insung.lol.record.dto.WinLoseLowDTO;
+import com.insung.lol.record.dto.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -25,7 +20,7 @@ public class RecordService {
 
     private ChromeDriver driver;
 
-    public List<WebElement> getRecord(String id) throws InterruptedException {
+    public RecordDataDTO getRecord(String id) throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-popup-blocking");       //팝업안띄움
@@ -45,31 +40,69 @@ public class RecordService {
             // 검색 결과 뜰 때 까지 잠시 대기
             Thread.sleep(1000);
 
-            // 전적 헤더
-            WebElement recordHeader = driver.findElement(By.cssSelector(".ehasqiv3"));
-            // 전적 리스트
-            //List<WebElement> recordList = driver.findElements(By.cssSelector(".e1iiyghw3"));
+            RecordDataDTO recordDataDTO = new RecordDataDTO();
 
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-            String format = sdf.format(date);
-            System.out.println("시작: " + format);
+            // 사이드 바 파싱
+            RecordRankDTO recordRank = recordSideBarParsing();
             // 전적 헤더 파싱
-            recordHeaderParsing(recordHeader);
-            Date date2 = new Date();
-            String format1 = sdf.format(date2);
-            System.out.println("시작: " + format1);
+            RecordHeaderDTO recordHeader = recordHeaderParsing();
             // 전적 리스트 파싱
-            //List<RecordListDTO> result = recordListParsing/(recordList);
-            //log.debug("테스트 {}", result);
-            //return recordList;
-            return null;
+            List<RecordListDTO> recordList = recordListParsing();
+
+            recordDataDTO.setRecordRankDTO(recordRank);
+            recordDataDTO.setRecordHeaderDTO(recordHeader);
+            recordDataDTO.setRecordListDTO(recordList);
+
+            return recordDataDTO;
         } finally {
             driver.quit();
         }
     }
 
-    private void recordHeaderParsing(WebElement recordHeader) {
+    private RecordRankDTO recordSideBarParsing() {
+        WebElement recordSideBar = driver.findElement(By.cssSelector(".e8nboil0 div"));
+        RecordRankDTO recordRankDTO = new RecordRankDTO();
+
+        //솔로랭크 영역
+        WebElement soloRankData = recordSideBar.findElement(By.cssSelector(".css-1v663t"));
+        recordRankDTO.setSoloRankHeader(soloRankData.findElement(By.cssSelector(".header")).getText());
+        recordRankDTO.setSoloRankImg(soloRankData.findElement(By.cssSelector(".content img")).getAttribute("src"));
+        recordRankDTO.setSoloRankTier(soloRankData.findElement(By.cssSelector(".tier")).getText());
+        recordRankDTO.setSoloRankLp(soloRankData.findElement(By.cssSelector(".lp")).getText());
+        recordRankDTO.setSoloRankWinLose(soloRankData.findElement(By.cssSelector(".win-lose")).getText());
+        recordRankDTO.setSoloRankRatio(soloRankData.findElement(By.cssSelector(".ratio")).getText());
+
+        //자유랭크 영역
+        WebElement teamRankData = recordSideBar.findElement(By.cssSelector(".css-1474l3c"));
+        recordRankDTO.setTeamRankHeader(teamRankData.findElement(By.cssSelector(".header")).getText());
+        recordRankDTO.setTeamRankImg(teamRankData.findElement(By.cssSelector(".content img")).getAttribute("src"));
+        recordRankDTO.setTeamRankTire(teamRankData.findElement(By.cssSelector(".tier")).getText());
+        recordRankDTO.setTeamRankLp(teamRankData.findElement(By.cssSelector(".lp")).getText());
+        recordRankDTO.setTeamRankWinLose(teamRankData.findElement(By.cssSelector(".win-lose")).getText());
+        recordRankDTO.setTeamRankRatio(teamRankData.findElement(By.cssSelector(".ratio")).getText());
+
+        //시즌전적 영역
+        List<WebElement> championRecordElements = recordSideBar.findElements(By.cssSelector(".css-e9xk5o .champion-box"));
+        List<ChampionBoxDTO> championBoxDTO = new ArrayList<>();
+        championRecordElements.stream().forEach(v -> {
+            ChampionBoxDTO dto = new ChampionBoxDTO();
+            dto.setChampImg(v.findElement(By.cssSelector(".face img")).getAttribute("src"));
+            dto.setChampName(v.findElement(By.cssSelector(".info .name")).getText());
+            dto.setCs(v.findElement(By.cssSelector(".info .cs")).getText());
+            dto.setGrade(v.findElement(By.cssSelector(".kda .e1g7spwk1")).getText());
+            dto.setDetail(v.findElement(By.cssSelector(".kda .detail")).getText());
+            dto.setWinRate(v.findElement(By.cssSelector(".played .e1g7spwk0")).getText());
+            dto.setCount(v.findElement(By.cssSelector(".played .count")).getText());
+            championBoxDTO.add(dto);
+        });
+
+        recordRankDTO.setChampionBoxDTOS(championBoxDTO);
+
+        return recordRankDTO;
+    }
+
+    private RecordHeaderDTO recordHeaderParsing() {
+        WebElement recordHeader = driver.findElement(By.cssSelector(".ehasqiv3"));
         RecordHeaderDTO recordHeaderDTO = new RecordHeaderDTO();
         recordHeaderDTO.setWinLose(recordHeader.findElement(By.cssSelector(".win-lose")).getText());
         recordHeaderDTO.setWinLosePercent(recordHeader.findElement(By.cssSelector(".kda .text")).getText());
@@ -85,38 +118,20 @@ public class RecordService {
                     winLoseLowDTO.setGrade(v.findElement(By.cssSelector(".ehasqiv1")).getText());
                     recordHeaderDTO.setWinLoseRow(winLoseLowDTO);
                 });
-        System.out.println("왜안해 :" + recordHeaderDTO);
+        return recordHeaderDTO;
     }
 
-    private List<RecordListDTO> recordListParsing(List<WebElement> recordList) {
+    private List<RecordListDTO> recordListParsing() {
+        List<WebElement> recordList = driver.findElements(By.cssSelector(".e1iiyghw3"));
         List<RecordListDTO> result = new ArrayList<>();
         for (WebElement webElement : recordList) {
             RecordListDTO recordListDTO = new RecordListDTO();
-            Game game = new Game();
-            Info info = new Info();
-            Participant participant = new Participant();
-            game.setRecordData(webElement);
-            webElement.findElements(By.cssSelector(".items li img")).stream().forEach(v ->
-                    game.setItem(v.getAttribute("src")));
-
-            info.setChampionLevel(webElement.findElement(By.cssSelector(".champion-level")).getText());
-            info.setChampionImg(webElement.findElement(By.cssSelector(".icon a img")).getAttribute("src"));
-            webElement.findElements(By.cssSelector(".spell img")).stream().forEach(v ->
-                    info.setChampionSpell(v.getAttribute("src")));
-
-            webElement.findElements(By.cssSelector(".rune img")).stream().forEach(v ->
-                    info.setChampionRune(v.getAttribute("src")));
-
-            webElement.findElements(By.cssSelector(".k-d-a span")).stream().forEach(v ->
-                    info.setChampionKDA(v.getText()));
-
-            webElement.findElements(By.cssSelector(".participants")).stream().forEach(v ->
-                    v.findElements(By.cssSelector(".name")).stream().forEach(o ->
-                           participant.setPlayerName(o.getText())));
-
-            webElement.findElements(By.cssSelector(".participants")).stream().forEach(v ->
-                    v.findElements(By.cssSelector(".icon img")).stream().forEach(o ->
-                            participant.setPlayerImg(o.getAttribute("src"))));
+            GameDTO game = new GameDTO();
+            InfoDTO info = new InfoDTO();
+            ParticipantDTO participant = new ParticipantDTO();
+            setGameData(webElement, game);
+            setInfoData(webElement, info);
+            setParticipantData(webElement, participant);
 
             recordListDTO.setGame(game);
             recordListDTO.setInfo(info);
@@ -124,6 +139,35 @@ public class RecordService {
             result.add(recordListDTO);
         }
         return result;
+    }
+
+    private void setParticipantData(WebElement webElement, ParticipantDTO participant) {
+        webElement.findElements(By.cssSelector(".participants .name")).stream().forEach(v ->
+                participant.setPlayerName(v.getText()));
+
+        webElement.findElements(By.cssSelector(".participants .icon img")).stream().forEach(v ->
+                participant.setPlayerImg(v.getAttribute("src")));
+    }
+
+    private void setInfoData(WebElement webElement, InfoDTO info) {
+        info.setChampionLevel(webElement.findElement(By.cssSelector(".champion-level")).getText());
+        info.setChampionImg(webElement.findElement(By.cssSelector(".icon a img")).getAttribute("src"));
+        webElement.findElements(By.cssSelector(".spell img")).stream().forEach(v ->
+                info.setChampionSpell(v.getAttribute("src")));
+
+        webElement.findElements(By.cssSelector(".rune img")).stream().forEach(v ->
+                info.setChampionRune(v.getAttribute("src")));
+
+        webElement.findElements(By.cssSelector(".k-d-a span")).stream().forEach(v ->
+                info.setChampionKDA(v.getText()));
+    }
+
+    private void setGameData(WebElement webElement, GameDTO game) {
+        game.setRecordData(webElement);
+        webElement.findElements(By.cssSelector(".items li img")).stream().forEach(v ->
+            game.addItem(v.getAttribute("src")));
+        game.addItem(webElement.findElement(By.cssSelector(".items .ward img")).getAttribute("src"));
+
     }
 
 }

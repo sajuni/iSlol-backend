@@ -1,4 +1,4 @@
-package com.insung.lol.record.domain;
+package com.insung.lol.record.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
 @Data
-public class Game {
+@NoArgsConstructor
+public class GameDTO {
     private String type;
     private String timeStamp;
     private String result;
@@ -24,7 +24,7 @@ public class Game {
         length = data.findElement(By.cssSelector(".length")).getText();
     }
 
-    public void setItem(String item) {
+    public void addItem(String item) {
         this.item.add(item);
     }
 }
