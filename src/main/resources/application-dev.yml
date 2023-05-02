@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true #To beautify or pretty print the SQL
@@ -18,7 +18,3 @@ logging:
     org.hibernate:
       type.descriptor.sql: trace #show parameter binding
       SQL: DEBUG
-
-jwt:
-  secret:
-    key: 2s5v8x/A?D(G+KbPeShVmYq3t6w9z$C&
