@@ -39,7 +39,6 @@ public class MemberServiceImpl implements MemberService {
         request.setPwd(passwordEncoder.encode(request.getPwd()));
         Member member = request.toEntity();
         member.setRoles(Collections.singletonList(MemberRole.builder().name("ROLE_USER").build()));
-
         Member result = memberRepository.save(member);
 
         return result.getId();

@@ -1,20 +1,19 @@
-package com.islol.demo.board.entity;
+package com.islol.demo.tournament.entity;
 
-import com.islol.demo.board.enums.Type;
 import com.islol.demo.member.entity.Member;
 import com.islol.demo.util.BaseEntity;
 import jakarta.persistence.*;
 
-@Entity(name = "TB_BOARD")
-public class Board extends BaseEntity {
+@Entity(name = "TB_TOURNAMENT")
+public class Tournament extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Type type;
-    private String content;
+    private Integer win;
+    private Integer lose;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
-
 }

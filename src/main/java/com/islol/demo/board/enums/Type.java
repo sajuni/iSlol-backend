@@ -1,4 +1,4 @@
-package com.islol.demo.board.entity.enums;
+package com.islol.demo.board.enums;
 
 public enum Type {
     NOTICE,
