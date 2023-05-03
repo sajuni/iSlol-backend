@@ -18,6 +18,7 @@ public class LoginResDTO {
     private String name;
     private String account;
     private String nick;
+    private String tier;
     private List<MemberRole> roles = new ArrayList<>();
     private String token;
 }

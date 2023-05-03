@@ -17,7 +17,7 @@ import java.util.List;
 public class RegisterReqDTO {
 
     @NotBlank(message = "이메일을 입력해주세요")
-    private String email;
+    private String account;
 
     @NotBlank(message = "비밀번호를 입력해주세요")
     private String pwd;
@@ -26,21 +26,21 @@ public class RegisterReqDTO {
 
     private String checkedPwd;
 
-    private String tel;
-
     @NotBlank(message = "닉네임을 입력해주세요")
     private String nick;
+
+    private String tier;
 
     private List<MemberRole> roles;
 
     @Builder
     public Member toEntity() {
-
         return Member.builder()
-                .account(email)
+                .account(account)
                 .name(name)
                 .nick(nick)
                 .pwd(pwd)
+                .tier(tier)
                 .build();
     }
 
