@@ -1,6 +1,7 @@
 package com.islol.demo.member.entity;
 
 import com.islol.demo.board.entity.Board;
+import com.islol.demo.member.enums.Position;
 import com.islol.demo.reply.entity.Reply;
 import com.islol.demo.tournament.entity.Tournament;
 import com.islol.demo.util.BaseEntity;
@@ -23,11 +24,26 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String account;
+    @Column(length = 100)
     private String pwd;
+    @Column(length = 50)
     private String name;
-    @Column(unique = true)
+    @Column(unique = true, length = 100)
     private String nick;
-    private String tier;
+    @Column(length = 50)
+    private String curTier;
+    @Column(length = 50)
+    private String preTier;
+    @Column(length = 50)
+    private String topTier;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50)
+    private Position mainPosition;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50)
+    private Position subPosition;
+    @Column
+    private Integer point;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default

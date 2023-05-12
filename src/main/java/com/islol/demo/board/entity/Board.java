@@ -16,6 +16,7 @@ public class Board extends BaseEntity {
     private Long id;
     @Enumerated(EnumType.STRING)
     private Type type;
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
