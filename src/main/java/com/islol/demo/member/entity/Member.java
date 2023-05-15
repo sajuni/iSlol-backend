@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class Member extends BaseEntity {
     private Position subPosition;
     @Column
     private Integer point;
+    private LocalDateTime birthDt;
+    @Column(columnDefinition = "int default 0")
+    private Integer warningCount;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default

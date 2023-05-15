@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -32,6 +33,7 @@ public class RegisterReqDTO {
     private Position subPosition;
     private Integer point;
     private List<MemberRole> roles;
+    private LocalDateTime birthDt;
 
     @Builder
     public Member toEntity() {
@@ -46,6 +48,7 @@ public class RegisterReqDTO {
                 .mainPosition(mainPosition)
                 .subPosition(subPosition)
                 .point(point)
+                .birthDt(birthDt)
                 .build();
     }
 
