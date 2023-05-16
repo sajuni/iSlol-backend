@@ -34,7 +34,7 @@ public class RegisterReqDTO {
     private Integer point;
     private List<MemberRole> roles;
     private LocalDateTime birthDt;
-
+    private Integer warningCount = 0;
     @Builder
     public Member toEntity() {
         return Member.builder()
@@ -49,6 +49,7 @@ public class RegisterReqDTO {
                 .subPosition(subPosition)
                 .point(point)
                 .birthDt(birthDt)
+                .warningCount(warningCount)
                 .build();
     }
 
