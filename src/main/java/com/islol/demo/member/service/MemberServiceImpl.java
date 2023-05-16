@@ -55,8 +55,6 @@ public class MemberServiceImpl implements MemberService {
                 .id(member.getId())
                 .account(member.getAccount())
                 .nick(member.getNick())
-                .name(member.getName())
-                .curTier(member.getCurTier())
                 .roles(member.getRoles())
                 .token(jwtProvider.createToken(member.getAccount(), member.getRoles()))
                 .build();

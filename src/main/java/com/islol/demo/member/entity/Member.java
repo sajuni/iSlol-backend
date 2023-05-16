@@ -2,6 +2,7 @@ package com.islol.demo.member.entity;
 
 import com.islol.demo.board.entity.Board;
 import com.islol.demo.member.enums.Position;
+import com.islol.demo.member.enums.Tier;
 import com.islol.demo.reply.entity.Reply;
 import com.islol.demo.tournament.entity.Tournament;
 import com.islol.demo.util.BaseEntity;
@@ -31,12 +32,15 @@ public class Member extends BaseEntity {
     private String name;
     @Column(unique = true, length = 100)
     private String nick;
+    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private String curTier;
+    private Tier curTier;
+    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private String preTier;
+    private Tier preTier;
+    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private String topTier;
+    private Tier topTier;
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private Position mainPosition;

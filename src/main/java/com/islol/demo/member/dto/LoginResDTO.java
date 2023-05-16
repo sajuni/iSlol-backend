@@ -1,6 +1,7 @@
 package com.islol.demo.member.dto;
 
 import com.islol.demo.member.entity.MemberRole;
+import com.islol.demo.member.enums.Tier;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class LoginResDTO {
     private String name;
     private String account;
     private String nick;
-    private String curTier;
+    private Tier curTier;
     private List<MemberRole> roles = new ArrayList<>();
     private String token;
 }

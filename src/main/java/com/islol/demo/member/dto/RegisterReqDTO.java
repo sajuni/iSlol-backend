@@ -3,6 +3,7 @@ package com.islol.demo.member.dto;
 import com.islol.demo.member.entity.Member;
 import com.islol.demo.member.entity.MemberRole;
 import com.islol.demo.member.enums.Position;
+import com.islol.demo.member.enums.Tier;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,9 +27,9 @@ public class RegisterReqDTO {
     private String checkedPwd;
     @NotBlank(message = "닉네임을 입력해주세요")
     private String nick;
-    private String curTier;
-    private String preTier;
-    private String topTier;
+    private Tier curTier;
+    private Tier preTier;
+    private Tier topTier;
     private Position mainPosition;
     private Position subPosition;
     private Integer point;

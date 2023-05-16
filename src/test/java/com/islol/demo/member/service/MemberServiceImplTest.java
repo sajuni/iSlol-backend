@@ -6,15 +6,16 @@ import com.islol.demo.member.dto.RegisterReqDTO;
 import com.islol.demo.member.dto.RegisterResDTO;
 import com.islol.demo.member.entity.MemberRole;
 import com.islol.demo.member.enums.Position;
+import com.islol.demo.member.enums.Tier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class MemberServiceImplTest {
@@ -28,8 +29,6 @@ class MemberServiceImplTest {
         //given
         RegisterReqDTO registerReqDTO = new RegisterReqDTO();
 
-        registerReqDTO.setCurTier("브론즈1");
-        registerReqDTO.setPreTier("실버1");
         registerReqDTO.setRoles(Collections.singletonList(MemberRole.builder().name("ROLE_USER").build()));
         int count = 1;
         //when
@@ -41,27 +40,39 @@ class MemberServiceImplTest {
                 case 1:
                     registerReqDTO.setMainPosition(Position.AD);
                     registerReqDTO.setSubPosition(Position.JG);
+                    registerReqDTO.setTopTier(Tier.CHALLENGER);
+                    registerReqDTO.setCurTier(Tier.IRON);
+                    registerReqDTO.setPreTier(Tier.DIAMOND);
                     break;
                 case 2:
                     registerReqDTO.setMainPosition(Position.SUP);
                     registerReqDTO.setSubPosition(Position.MID);
+                    registerReqDTO.setTopTier(Tier.MASTER);
+                    registerReqDTO.setCurTier(Tier.GOLD);
+                    registerReqDTO.setPreTier(Tier.DIAMOND);
                     break;
                 case 3:
                     registerReqDTO.setMainPosition(Position.SUP);
                     registerReqDTO.setSubPosition(Position.AD);
+                    registerReqDTO.setTopTier(Tier.GRANDMASTER);
+                    registerReqDTO.setCurTier(Tier.BRONZE);
+                    registerReqDTO.setPreTier(Tier.SILVER);
                     break;
                 case 4:
                     registerReqDTO.setMainPosition(Position.AD);
                     registerReqDTO.setSubPosition(Position.TOP);
+                    registerReqDTO.setTopTier(Tier.DIAMOND);
+                    registerReqDTO.setCurTier(Tier.PLATINUM);
+                    registerReqDTO.setPreTier(Tier.GOLD);
                     break;
                 case 5:
                     registerReqDTO.setMainPosition(Position.MID);
                     registerReqDTO.setSubPosition(Position.SUP);
+                    registerReqDTO.setTopTier(Tier.SILVER);
+                    registerReqDTO.setCurTier(Tier.IRON);
+                    registerReqDTO.setPreTier(Tier.SILVER);
                     break;
             }
-            registerReqDTO.setCurTier("브론즈" + count);
-            registerReqDTO.setPreTier("실버" + count);
-            registerReqDTO.setTopTier("다이아" + count);
             registerReqDTO.setPwd("1");
             registerReqDTO.setCheckedPwd("1");
             registerReqDTO.setName("테스트이름" + i);
