@@ -32,7 +32,7 @@ public class RegisterReqDTO {
     private Tier topTier;
     private Position mainPosition;
     private Position subPosition;
-    private Integer point;
+    private Integer point = 0;
     private List<MemberRole> roles;
     private LocalDateTime birthDt;
     private Integer warningCount = 0;
