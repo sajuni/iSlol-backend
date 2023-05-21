@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -44,9 +45,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     public LoginResDTO login(LoginReqDTO request) {
-        Member member = memberRepository.findByAccount(request.getAccount()).orElseThrow(() ->
-            new BadCredentialsException("아이디를 확인해 주세요.")
-        );
+        Member member =
+                memberRepository.findByAccount(request.getAccount()).orElseThrow(() -> new BadCredentialsException(
+                        "아이디를 확인해 주세요."));
         if (!passwordEncoder.matches(request.getPwd(), member.getPwd())) {
             throw new BadCredentialsException("비밀번호를 확인해 주세요.");
         }
@@ -58,5 +59,11 @@ public class MemberServiceImpl implements MemberService {
                 .roles(member.getRoles())
                 .token(jwtProvider.createToken(member.getAccount(), member.getRoles()))
                 .build();
+    }
+
+    public List<Member> getMemberList() {
+        List<Member> memberList = memberRepository.findAll();
+
+        return memberList;
     }
 }
