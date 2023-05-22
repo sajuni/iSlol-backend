@@ -1,13 +1,15 @@
 spring:
+  profiles:
+    active: local
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/islol?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: root
+    password: 1013
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true #To beautify or pretty print the SQL

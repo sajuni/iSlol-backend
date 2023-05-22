@@ -93,7 +93,7 @@ class MemberServiceImplTest {
     void loginTest() {
         //given
         LoginReqDTO loginReqDTO = new LoginReqDTO();
-        loginReqDTO.setAccount("test@test.com");
+        loginReqDTO.setAccount("test1@test.com");
         loginReqDTO.setPwd("1");
 
         //when
@@ -101,7 +101,7 @@ class MemberServiceImplTest {
 
         //then
         assertNotNull(result.getId());
-        assertEquals("test@test.com", result.getAccount());
+        assertEquals("test1@test.com", result.getAccount());
 
     }
 
